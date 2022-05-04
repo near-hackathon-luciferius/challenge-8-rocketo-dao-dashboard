@@ -1,0 +1,13 @@
+[package]
+name = "dao-dashboard"
+version = "0.1.0"
+authors = ["Luciferius <twitter.cryptosketches@gmail.com>"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+near-sdk = "4.0.0-pre.8"
+near-contract-standards = "4.0.0-pre.8"
+chrono = "0.4.15"
