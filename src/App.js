@@ -13,11 +13,12 @@ import TaskDetail from './components/TaskDetail';
 import NotFound from './components/404.jsx';
 import 'materialize-css/dist/css/materialize.css'
 import './App.css';
+import Big from 'big.js';
 import { Route, Routes } from 'react-router-dom'
 var version = require('../package.json').version;
 require('materialize-css');
 
-//const BOATLOAD_OF_GAS = Big(3).times(10 ** 14).toFixed();
+const BOATLOAD_OF_GAS = Big(3).times(10 ** 14).toFixed();
 
 const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransaction, error }) => {
   const [message, setMessage] = useState('');
@@ -37,8 +38,12 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
 
       async function getState(txHash, accountId) {
         const result = await provider.txStatus(txHash, accountId);
-        //minting
+        //dao creation
         let message = result.receipts_outcome[0].outcome.logs.pop();
+        if(!message){
+          //cancel job
+          message = result.receipts_outcome[3].outcome.logs.pop();
+        }
         if(message){
           setMessage(message);
         }
@@ -61,6 +66,31 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
       
       fetchData();
   }, [contract, currentUser, dao]);
+
+  const onCancelJob = (jobId) => {
+      contract.cancel_job(
+        {
+          job_id: jobId
+        },
+        BOATLOAD_OF_GAS,
+        Big('1').times(10 ** 21).toFixed()
+      ).then((_) => {
+        console.log("Successfully canceled.");
+      })
+  }
+
+  const onStartJob = (jobId, contracted) => {
+      contract.start_job(
+        {
+          job_id: jobId,
+          contracted: contracted
+        },
+        BOATLOAD_OF_GAS,
+        Big('1').times(10 ** 22).toFixed()
+      ).then((_) => {
+        console.log("Successfully started.");
+      })
+  }
   
   const signIn = () => {
     wallet.requestSignIn(
@@ -92,7 +122,7 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
           <Route index element={<DaoDashboard version={version}/>}/>
           <Route path="jobs">
             <Route index element={<JobsOverview daoData={daoData} loaded={loaded}/>}/>
-            <Route path=":job" element={<JobDetail daoData={daoData}/>}/>
+            <Route path=":job" element={<JobDetail daoData={daoData} currentUser={currentUser} onCancelJob={onCancelJob} onStartJob={onStartJob}/>}/>
           </Route>
           <Route path="tasks">
             <Route index element={<TasksOverview/>}/>

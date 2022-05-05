@@ -1,7 +1,7 @@
 {
   "name": "dao-dashboard-react",
   "version": "0.1.0",
-  "homepage": "https://near-hackathon-luciferius.github.io/challenge-6-ukraine-nft",
+  "homepage": "https://near-hackathon-luciferius.github.io/challenge-8-ukraine-nft",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.9.0",
