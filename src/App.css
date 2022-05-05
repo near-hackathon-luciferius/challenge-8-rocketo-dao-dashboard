@@ -29,6 +29,7 @@ body, html {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+    color: #fff;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     height: 100%;
@@ -44,6 +45,15 @@ body, html {
   left: 0%;
   height: 100%;
   width: 100%;
+}
+
+.roketo-iframe {
+  background: #bdc3c788;
+  border-radius: 20px;
+  border-width: 5px;
+  margin: 1em 0 0 1em;
+  width: 500px;
+  height: 650px;
 }
 
 code {
@@ -121,7 +131,7 @@ span.important {
 }
 
 .bm-burger-bars {
-  background: #373a47;
+  background: #727096;
 }
 
 .bm-cross-button {
@@ -134,7 +144,7 @@ span.important {
 }
 
 .bm-menu {
-  background: #373a47;
+  background: #727096;
   padding: 2.5em 1.5em 0;
   font-size: 1.15em;
 }
@@ -145,7 +155,7 @@ nav {
 }
 
 .bm-morph-shape {
-  fill: #373a47;
+  fill: #727096;
 }
 
 .bm-item-list {
@@ -160,6 +170,12 @@ nav {
   position: fixed;
   top: 10px;
   right: 10px;
+}
+
+.btn-icon {
+  vertical-align: middle;
+  align-self: center;
+  margin: 0;
 }
 
 /* Popup style */
@@ -210,7 +226,7 @@ nav {
   text-align: right;
 }
 
-.card-stats{
+.card{
   padding-left: 10px;
   padding-right: 10px;
 }
@@ -225,7 +241,7 @@ nav {
 }
 
 .card {
-  background-color: #ffffffaa;
+  background-color: #bdc3c788;
 }
 
 .text-center {
@@ -237,7 +253,7 @@ p.small {
 }
 
 form {
-  background-color: #ffffffaa;
+  background-color: #bdc3c788;
 }
 
 fieldset {

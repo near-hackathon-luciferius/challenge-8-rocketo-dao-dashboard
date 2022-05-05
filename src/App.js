@@ -1,53 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import SignIn from './components/SignIn';
-import Big from 'big.js';
 import Layout from './layout';
+import DaoLayout from './dao-layout';
+import CreateDao from './components/CreateDao';
+import DaoDashboard from './components/DaoDashboard';
+import JobsOverview from './components/JobsOverview';
+import JobDetail from './components/JobDetail';
+import MembersOverview from './components/MembersOverview';
+import MemberDetail from './components/MemberDetail';
+import TasksOverview from './components/TasksOverview';
+import TaskDetail from './components/TaskDetail';
 import NotFound from './components/404.jsx';
-import Dashboard from './components/Dashboard.jsx';
-import Collection from './components/Collection.jsx';
-import Payout from './components/Payout.jsx';
 import 'materialize-css/dist/css/materialize.css'
 import './App.css';
 import { Route, Routes } from 'react-router-dom'
 var version = require('../package.json').version;
 require('materialize-css');
 
-const BOATLOAD_OF_GAS = Big(3).times(10 ** 14).toFixed();
+//const BOATLOAD_OF_GAS = Big(3).times(10 ** 14).toFixed();
 
-const App = ({ contract, nftContract, currentUser, nearConfig, wallet, provider, lastTransaction, error }) => {
+const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransaction, error }) => {
   const [message, setMessage] = useState('');
-
-  const onNftMint = (e) => {
-    e.preventDefault();
-
-    const { fieldset } = e.target.elements;
-    const amount = e.target.elements.item(1);
-
-    fieldset.disabled = true;
-
-    contract.buy_animal(
-      {
-        count: parseInt(amount.value)
-      },
-      BOATLOAD_OF_GAS,
-      Big('1').times(10 ** 24).times(amount.value).toFixed()
-    ).then((_) => {
-      console.log("Successfully minted.");
-    })
-  }
-
-  const onPayout = (set) => {
-    contract.payout(
-      {
-        nft_set: set.map(id => parseInt(id))
-      },
-      BOATLOAD_OF_GAS,
-      0
-    ).then((_) => {
-      console.log("Successfully payed out.");
-    })
-  }
+  const [dao, setDao] = useState('');
+  const [daoData, setDaoData] = useState([]);
+  const [loaded, setLoaded] = useState(false);
   
   useEffect(() => {
       if (error){
@@ -63,13 +39,28 @@ const App = ({ contract, nftContract, currentUser, nearConfig, wallet, provider,
         const result = await provider.txStatus(txHash, accountId);
         //minting
         let message = result.receipts_outcome[0].outcome.logs.pop();
-        if(!message){
-          //payout
-          message = result.receipts_outcome[6].outcome.logs.pop();
+        if(message){
+          setMessage(message);
         }
-        setMessage(message);
       }
   }, [lastTransaction, error, currentUser, provider]);
+  
+  useEffect(() => {
+      async function fetchData() {
+        if(!dao){
+          return;
+        }
+        const result = await contract.get_dao(
+        {
+          dao_owner: dao
+        });
+        console.log(result);
+        setDaoData(result);
+        setLoaded(true);
+      }
+      
+      fetchData();
+  }, [contract, currentUser, dao]);
   
   const signIn = () => {
     wallet.requestSignIn(
@@ -89,45 +80,33 @@ const App = ({ contract, nftContract, currentUser, nearConfig, wallet, provider,
     setMessage('');
   };
 
+  if(!currentUser){
+    return <SignIn signIn={signIn}/>;
+  }
+
   return (
     <Routes>
       <Route path="/" element={<Layout currentUser={currentUser} signIn={signIn} signOut={signOut} clearMessage={clearMessage} message={message}/>}>
-        <Route index element={
-          currentUser
-            ? <Dashboard version={version} nearConfig={nearConfig}/>
-            : <SignIn signIn={signIn}/>
-        }/>
-        <Route path="collection" element={
-          currentUser
-            ? <Collection onNftMint={onNftMint} currentUser={currentUser} contract={nftContract}/>
-            : <SignIn signIn={signIn}/>
-        }/>
-        <Route path="payout" element={
-          currentUser
-            ? <Payout onPayout={onPayout} currentUser={currentUser} contract={nftContract}/>
-            : <SignIn signIn={signIn}/>
-        }/>
-        <Route path="*" element={<NotFound/>}/>
+        <Route index element={<CreateDao version={version}/>}/>
+        <Route path=":dao" element={<DaoLayout setDao={setDao}/>}>
+          <Route index element={<DaoDashboard version={version}/>}/>
+          <Route path="jobs">
+            <Route index element={<JobsOverview daoData={daoData} loaded={loaded}/>}/>
+            <Route path=":job" element={<JobDetail daoData={daoData}/>}/>
+          </Route>
+          <Route path="tasks">
+            <Route index element={<TasksOverview/>}/>
+            <Route path=":task" element={<TaskDetail/>}/>
+          </Route>
+          <Route path="members">
+            <Route index element={<MembersOverview version={version} nearConfig={nearConfig}/>}/>
+            <Route path=":member" element={<MemberDetail/>}/>
+          </Route>
+          <Route path="*" element={<NotFound/>}/>
+        </Route>
       </Route>
     </Routes>
   );
 }
-
-App.propTypes = {
-  contract: PropTypes.shape({
-    buy_animal: PropTypes.func.isRequired
-  }).isRequired,
-  currentUser: PropTypes.shape({
-    accountId: PropTypes.string.isRequired,
-    balance: PropTypes.string.isRequired
-  }),
-  nearConfig: PropTypes.shape({
-    contractName: PropTypes.string.isRequired
-  }).isRequired,
-  wallet: PropTypes.shape({
-    requestSignIn: PropTypes.func.isRequired,
-    signOut: PropTypes.func.isRequired
-  }).isRequired
-};
 
 export default App;

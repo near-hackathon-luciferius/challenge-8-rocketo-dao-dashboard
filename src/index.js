@@ -43,26 +43,7 @@ async function initContract() {
     nearConfig.contractName,
     {
       // View methods are read-only – they don't modify the state, but usually return some value
-      viewMethods: [],
-      // Change methods can modify the state, but you don't receive the returned value when called
-      changeMethods: ['buy_animal', 'payout'],
-      // Sender is the account ID to initialize transactions.
-      // getAccountId() will return empty string if user is still unauthorized
-      sender: walletConnection.getAccountId(),
-    }
-  );
-
-  // Initializing our contract APIs by contract name and configuration
-  const nftContract = await new nearAPI.Contract(
-    // User's accountId as a string
-    walletConnection.account(),
-    // accountId of the contract we will be loading
-    // NOTE: All contracts on NEAR are deployed to an account and
-    // accounts can only have one contract deployed to them.
-    nearConfig.nftContractName,
-    {
-      // View methods are read-only – they don't modify the state, but usually return some value
-      viewMethods: ['nft_supply_for_owner', 'nft_tokens_for_owner'],
+      viewMethods: ['get_dao'],
       // Change methods can modify the state, but you don't receive the returned value when called
       changeMethods: [],
       // Sender is the account ID to initialize transactions.
@@ -73,11 +54,11 @@ async function initContract() {
   
   const provider = near.connection.provider;
   
-  return { contract, nftContract, currentUser, nearConfig, walletConnection, provider };
+  return { contract, currentUser, nearConfig, walletConnection, provider };
 }
 
 window.nearInitPromise = initContract().then(
-  ({ contract, nftContract, currentUser, nearConfig, walletConnection, provider }) => {
+  ({ contract, currentUser, nearConfig, walletConnection, provider }) => {
     let urlParams = new URLSearchParams(window.location.search);
     let lastTransaction;
     if(urlParams.has('transactionHashes')){
@@ -97,7 +78,6 @@ window.nearInitPromise = initContract().then(
           lastTransaction={lastTransaction}
           provider={provider}
           error={errorMessage}
-          nftContract={nftContract}
         />
 	  </Router>,
       document.getElementById('root')

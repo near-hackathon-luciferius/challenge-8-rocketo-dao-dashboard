@@ -1,6 +1,5 @@
 import React from 'react';
-import { Link, Outlet } from 'react-router-dom'
-import { slide as Menu } from 'react-burger-menu';
+import { Outlet } from 'react-router-dom'
 import { Button } from 'react-materialize';
 import PropTypes from 'prop-types';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
@@ -11,25 +10,10 @@ const Layout = ({currentUser, signIn, signOut, clearMessage, message}) => {
   return (
     <>
       <div id="App">
-          <Menu pageWrapId={ "page-wrapper" } outerContainerId={ "App" }>
-            <Link className="menu-item" to="/">
-              Dashboard
-            </Link>
-
-            <Link className="menu-item" to="/collection">
-              Collection
-            </Link>
-
-            <Link className="menu-item" to="/payout">
-              Payout
-            </Link>
-          </Menu>
-          <main id="page-wrapper">
-            <Outlet/>
-          </main>
+          <Outlet/>
           { currentUser
-            ? <Button onClick={signOut} floating large className='btn-login' icon={<AccountBalanceWalletIcon fontSize="medium" />} tooltip={'Log out ' + currentUser.accountId + '.'} />
-            : <Button onClick={signIn} floating large className='btn-login' icon={<BrokenImageIcon fontSize="medium" />} tooltip='Log in using NEAR wallet.' />
+            ? <Button onClick={signOut} floating large className='btn-login' icon={<AccountBalanceWalletIcon fontSize="large" className="btn-icon" />} tooltip={'Log out ' + currentUser.accountId + '.'} />
+            : <Button onClick={signIn} floating large className='btn-login' icon={<BrokenImageIcon fontSize="large" className="btn-icon" />} tooltip='Log in using NEAR wallet.' />
           }        
           {message && <Popup
             content={<>

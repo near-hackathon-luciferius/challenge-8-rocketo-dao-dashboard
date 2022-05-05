@@ -181,7 +181,7 @@ impl Contract {
         let job_index = dao.jobs.binary_search_by_key(&job_id, |job| job.id.clone());
         assert!(job_index.is_ok(), "There is no job {:?} in the dao {}", job_id, dao_owner);
         let job = dao.jobs.get(job_index.unwrap()).unwrap();
-        assert!(job.state != WorkState::InProgress, "You can only start jobs that are not currently running.");
+        assert!(job.state == WorkState::Open, "You can only start jobs that are not currently running.");
         assert!(env::attached_deposit() >= 10u128.pow(22), "You need to attach at least 0.01 NEAR for operational costs.");
 
         let mut payment: u128 = job.payment.into();
@@ -297,6 +297,12 @@ impl Contract {
         let dao_option = self.daos.get(&dao_owner);
         assert!(dao_option.is_some(), "There is no known DAO for {}", dao_owner);
         dao_option.unwrap()
+    }
+
+    pub fn get_daos(
+        &self
+    ) -> Vec<AccountId>{
+        self.daos.keys_as_vector().to_vec()
     }
 
     pub fn clear(
