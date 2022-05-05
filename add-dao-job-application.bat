@@ -1,0 +1,4 @@
+@echo off
+
+call near call dao-dashboard.cryptosketches.testnet create_dao "{""dao_owner_id"": ""cryptosketches.testnet"", ""name"": ""Super DAO"", ""description"": ""The best DAO in the world."", ""icon"": ""https://cdn-icons-png.flaticon.com/512/4123/4123675.png""}" --accountId cryptosketches.testnet --deposit 10
+call near call dao-dashboard.cryptosketches.testnet create_job_offering "{""name"": ""Super Job"", ""description"": ""Best job in the world"", ""available_positions"": ""2"", ""payment"": ""10000000000000000000000000"", ""payment_cycle_in_s"": ""43200""}" --accountId cryptosketches.testnet --deposit 10
