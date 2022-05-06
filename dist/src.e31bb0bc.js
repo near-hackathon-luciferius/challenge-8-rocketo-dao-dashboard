@@ -42971,10 +42971,13 @@ function SignIn(_ref) {
   let {
     signIn
   } = _ref;
-  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, "Kawaii Zoo Homepage")), /*#__PURE__*/_react.default.createElement(_reactMaterialize.Button, {
-    small: true,
-    onClick: signIn
-  }, "Log in"), /*#__PURE__*/_react.default.createElement("p", null, "This app was developed for the NEAR Spring hackathon. In order to use the app you need to sign in with your NEAR wallet."));
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("main", {
+    id: "page-wrapper"
+  }, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, "Kawaii Zoo Homepage")), /*#__PURE__*/_react.default.createElement(_reactMaterialize.Button, {
+    large: true,
+    onClick: signIn,
+    className: "login"
+  }, "Log in"), /*#__PURE__*/_react.default.createElement("p", null, "This app was developed for the NEAR Spring hackathon. In order to use the app you need to sign in with your NEAR wallet.")));
 }
 },{"react":"../node_modules/react/index.js","react-materialize":"../node_modules/react-materialize/lib/index.js"}],"../node_modules/@babel/runtime/helpers/interopRequireDefault.js":[function(require,module,exports) {
 function _interopRequireDefault(obj) {
@@ -81603,7 +81606,71 @@ const Layout = _ref => {
 
 var _default = Layout;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","react-burger-menu":"../node_modules/react-burger-menu/lib/BurgerMenu.js"}],"components/CreateDao.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","react-burger-menu":"../node_modules/react-burger-menu/lib/BurgerMenu.js"}],"components/DaoCreationForm.jsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = DaoCreationForm;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactMaterialize = require("react-materialize");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function DaoCreationForm(_ref) {
+  let {
+    onDaoCreation
+  } = _ref;
+  return /*#__PURE__*/_react.default.createElement("form", {
+    onSubmit: onDaoCreation
+  }, /*#__PURE__*/_react.default.createElement("fieldset", {
+    id: "fieldset",
+    className: "flex flex-col details-view flex-grow"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "highlight flex flex-col"
+  }, /*#__PURE__*/_react.default.createElement("h5", null, "Create a new DAO"), /*#__PURE__*/_react.default.createElement("p", null, "Hint: If you are looking for an existing DAO scroll down to see the list of all existing DAOs. ", /*#__PURE__*/_react.default.createElement("br", null), "Add all required parameter for the new job and hit the 'Create' button."), /*#__PURE__*/_react.default.createElement(_reactMaterialize.TextInput, {
+    autoComplete: "off",
+    autoFocus: true,
+    id: "name_prompt",
+    label: "The name of your DAO.",
+    required: true
+  }), /*#__PURE__*/_react.default.createElement(_reactMaterialize.Textarea, {
+    id: "description_prompt",
+    label: "A detailed description of your DAO.",
+    required: true
+  }), /*#__PURE__*/_react.default.createElement(_reactMaterialize.TextInput, {
+    autoComplete: "off",
+    id: "icon_prompt",
+    label: "An URL to you DAO icon. Optional."
+  })), /*#__PURE__*/_react.default.createElement(_reactMaterialize.Button, {
+    type: "submit",
+    small: true,
+    tooltip: "Creates the DAO. This will costs 10 \u24C3."
+  }, "Create")));
+}
+},{"react":"../node_modules/react/index.js","react-materialize":"../node_modules/react-materialize/lib/index.js"}],"../node_modules/@mui/icons-material/ArrowForwardOutlined.js":[function(require,module,exports) {
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _createSvgIcon = _interopRequireDefault(require("./utils/createSvgIcon"));
+
+var _jsxRuntime = require("react/jsx-runtime");
+
+var _default = (0, _createSvgIcon.default)( /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
+  d: "m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"
+}), 'ArrowForwardOutlined');
+
+exports.default = _default;
+},{"@babel/runtime/helpers/interopRequireDefault":"../node_modules/@babel/runtime/helpers/interopRequireDefault.js","./utils/createSvgIcon":"../node_modules/@mui/icons-material/utils/createSvgIcon.js","react/jsx-runtime":"../node_modules/react/jsx-runtime.js"}],"components/CreateDao.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -81611,19 +81678,76 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = CreateDao;
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
+
+var _reactRouterDom = require("react-router-dom");
+
+var _DaoCreationForm = _interopRequireDefault(require("./DaoCreationForm"));
+
+var _ArrowForwardOutlined = _interopRequireDefault(require("@mui/icons-material/ArrowForwardOutlined"));
+
+var _reactMaterialize = require("react-materialize");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
 function CreateDao(_ref) {
   let {
-    version
+    version,
+    currentUser,
+    contract,
+    onDaoCreation
   } = _ref;
+  const navigate = (0, _reactRouterDom.useNavigate)();
+  const [ownsDao, setOwnsDao] = (0, _react.useState)(false);
+  const [loaded, setLoaded] = (0, _react.useState)(false);
+  const [daos, setDaos] = (0, _react.useState)([]);
+  (0, _react.useEffect)(() => {
+    async function fetchData() {
+      const result = await contract.get_daos({});
+      console.log(result);
+      setOwnsDao(result.includes(currentUser.accountId));
+      setDaos(result);
+      setLoaded(true);
+    }
+
+    fetchData();
+  }, [contract, currentUser]);
+
+  const goToDao = target => {
+    navigate(target);
+  };
+
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("main", {
     id: "page-wrapper"
-  }, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, "NEAR Challenge #8 - DAO Dashboard - ", version)), /*#__PURE__*/_react.default.createElement("p", null, "Create a new DAO or enter existing ones.")));
+  }, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, "NEAR Challenge #8 - DAO Dashboard - ", version)), loaded ? /*#__PURE__*/_react.default.createElement("div", {
+    className: "flex flex-row-wrap justify-between margin-row-small"
+  }, ownsDao ? /*#__PURE__*/_react.default.createElement(_reactMaterialize.Button, {
+    large: true,
+    onClick: () => goToDao(currentUser.accountId)
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "flex flex-row"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "min-margin-right"
+  }, /*#__PURE__*/_react.default.createElement(_ArrowForwardOutlined.default, {
+    className: "btn-icon"
+  })), /*#__PURE__*/_react.default.createElement("div", null, "Got To Your DAO"))) : /*#__PURE__*/_react.default.createElement(_DaoCreationForm.default, {
+    onDaoCreation: onDaoCreation
+  })) : null, /*#__PURE__*/_react.default.createElement("p", null, "Description of idea."), /*#__PURE__*/_react.default.createElement("h5", null, "All Existing DAOs"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "flex flex-col"
+  }, daos.length > 0 ? daos.map(dao => /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    className: "margin-row-small text-bigger bm-item menu-item flex flex-row",
+    to: dao
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "min-margin-right"
+  }, /*#__PURE__*/_react.default.createElement(_ArrowForwardOutlined.default, {
+    className: "btn-icon"
+  })), /*#__PURE__*/_react.default.createElement("div", null, dao))) : null)));
 }
-},{"react":"../node_modules/react/index.js"}],"../node_modules/@mui/icons-material/WorkOutlineOutlined.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","./DaoCreationForm":"components/DaoCreationForm.jsx","@mui/icons-material/ArrowForwardOutlined":"../node_modules/@mui/icons-material/ArrowForwardOutlined.js","react-materialize":"../node_modules/react-materialize/lib/index.js"}],"../node_modules/@mui/icons-material/WorkOutlineOutlined.js":[function(require,module,exports) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -81730,7 +81854,11 @@ function DaoDashboard(_ref) {
     _react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, dao, " Dashboard")), /*#__PURE__*/_react.default.createElement("p", null, "Loading..."));
   }
 
-  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, daoData.name, " Dashboard")), /*#__PURE__*/_react.default.createElement("div", {
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, daoData.name, " Dashboard ", daoData.icon ? /*#__PURE__*/_react.default.createElement("img", {
+    src: daoData.icon,
+    alt: "DAO icon",
+    className: "dao-icon"
+  }) : null)), /*#__PURE__*/_react.default.createElement("div", {
     className: "flex flex-row justify-between"
   }, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
     className: "bm-item menu-item flex-grow medium-margin-right",
@@ -81784,7 +81912,7 @@ function DaoDashboard(_ref) {
   }, "Jobs")), /*#__PURE__*/_react.default.createElement("div", {
     className: "col s7 numbers"
   }, /*#__PURE__*/_react.default.createElement("h5", null, jobs))))))), /*#__PURE__*/_react.default.createElement("p", {
-    className: "bigger-font"
+    className: "bigger-font preserve-newline"
   }, daoData.description));
 }
 },{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","@mui/icons-material/WorkOutlineOutlined":"../node_modules/@mui/icons-material/WorkOutlineOutlined.js","@mui/icons-material/TaskOutlined":"../node_modules/@mui/icons-material/TaskOutlined.js","@mui/icons-material/PeopleAltOutlined":"../node_modules/@mui/icons-material/PeopleAltOutlined.js"}],"components/JobForm.jsx":[function(require,module,exports) {
@@ -81818,8 +81946,7 @@ function JobForm(_ref) {
     id: "name_prompt",
     label: "The name of the job.",
     required: true
-  }), /*#__PURE__*/_react.default.createElement(_reactMaterialize.TextInput, {
-    autoComplete: "off",
+  }), /*#__PURE__*/_react.default.createElement(_reactMaterialize.Textarea, {
     id: "description_prompt",
     label: "A detailed description of the job.",
     required: true
@@ -81906,7 +82033,7 @@ const JobsOverview = _ref => {
     return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, dao, "'s Jobs Board")), /*#__PURE__*/_react.default.createElement("h1", null, "Loading..."));
   }
 
-  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, daoData.name, "'s Jobs Board")), /*#__PURE__*/_react.default.createElement("h5", null, "Open Jobs"), daoData.jobs.length > 0 ? openJobs.map(chunk => /*#__PURE__*/_react.default.createElement("div", {
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, daoData.name, "'s Jobs Board")), /*#__PURE__*/_react.default.createElement("h5", null, "Open Jobs"), openJobs.length > 0 ? openJobs.map(chunk => /*#__PURE__*/_react.default.createElement("div", {
     className: "row"
   }, chunk.map(job => /*#__PURE__*/_react.default.createElement("div", {
     className: "col s4"
@@ -81919,7 +82046,9 @@ const JobsOverview = _ref => {
     className: "card-title"
   }, job.name), /*#__PURE__*/_react.default.createElement("div", {
     className: "card-content"
-  }, /*#__PURE__*/_react.default.createElement("p", null, job.description)))))))) : /*#__PURE__*/_react.default.createElement("p", null, "Currently there are no open jobs available."), /*#__PURE__*/_react.default.createElement("h5", null, "Active Jobs"), daoData.jobs.length > 0 ? runningJobs.map(chunk => /*#__PURE__*/_react.default.createElement("div", {
+  }, /*#__PURE__*/_react.default.createElement("p", {
+    className: "preserve-newline"
+  }, job.description)))))))) : /*#__PURE__*/_react.default.createElement("p", null, "Currently there are no open jobs available."), /*#__PURE__*/_react.default.createElement("h5", null, "Active Jobs"), runningJobs.length > 0 ? runningJobs.map(chunk => /*#__PURE__*/_react.default.createElement("div", {
     className: "row"
   }, chunk.map(job => /*#__PURE__*/_react.default.createElement("div", {
     className: "col s4"
@@ -81932,7 +82061,9 @@ const JobsOverview = _ref => {
     className: "card-title"
   }, job.name), /*#__PURE__*/_react.default.createElement("div", {
     className: "card-content"
-  }, /*#__PURE__*/_react.default.createElement("p", null, job.description)))))))) : /*#__PURE__*/_react.default.createElement("p", null, "Currently there are no active jobs."), /*#__PURE__*/_react.default.createElement("h5", null, "Canceled Jobs"), daoData.jobs.length > 0 ? canceledJobs.map(chunk => /*#__PURE__*/_react.default.createElement("div", {
+  }, /*#__PURE__*/_react.default.createElement("p", {
+    className: "preserve-newline"
+  }, job.description)))))))) : /*#__PURE__*/_react.default.createElement("p", null, "Currently there are no active jobs."), /*#__PURE__*/_react.default.createElement("h5", null, "Canceled Jobs"), canceledJobs.length > 0 ? canceledJobs.map(chunk => /*#__PURE__*/_react.default.createElement("div", {
     className: "row"
   }, chunk.map(job => /*#__PURE__*/_react.default.createElement("div", {
     className: "col s4"
@@ -81945,7 +82076,9 @@ const JobsOverview = _ref => {
     className: "card-title"
   }, job.name), /*#__PURE__*/_react.default.createElement("div", {
     className: "card-content"
-  }, /*#__PURE__*/_react.default.createElement("p", null, job.description)))))))) : /*#__PURE__*/_react.default.createElement("p", null, "Currently there are no canceled jobs."), dao === currentUser.accountId ? /*#__PURE__*/_react.default.createElement(_JobForm.default, {
+  }, /*#__PURE__*/_react.default.createElement("p", {
+    className: "preserve-newline"
+  }, job.description)))))))) : /*#__PURE__*/_react.default.createElement("p", null, "Currently there are no canceled jobs."), dao === currentUser.accountId ? /*#__PURE__*/_react.default.createElement(_JobForm.default, {
     onJobCreation: onJobCreation
   }) : null);
 };
@@ -83224,7 +83357,7 @@ const JobDetail = _ref => {
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "details-view flex flex-col flex-grow medium-margin-right"
   }, /*#__PURE__*/_react.default.createElement("div", {
-    className: "margin-row-small text-bigger"
+    className: "margin-row-small text-bigger preserve-newline"
   }, jobData.description), /*#__PURE__*/_react.default.createElement("div", {
     className: "flex justify-between margin-row-small"
   }, /*#__PURE__*/_react.default.createElement("div", {
@@ -83250,7 +83383,7 @@ const JobDetail = _ref => {
     position: "relative",
     overflow: "hidden",
     className: "roketo-iframe"
-  })) : null), dao !== currentUser.accountId ? /*#__PURE__*/_react.default.createElement("div", {
+  })) : null), dao !== currentUser.accountId && jobData.state === 'Open' ? /*#__PURE__*/_react.default.createElement("div", {
     className: "margin-row-big"
   }, /*#__PURE__*/_react.default.createElement(_ApplicationForm.default, {
     onApplyForJob: onApplyForJob,
@@ -96161,6 +96294,23 @@ const App = _ref => {
     });
   };
 
+  const onDaoCreation = e => {
+    e.preventDefault();
+    const {
+      fieldset,
+      name_prompt,
+      description_prompt,
+      icon_prompt
+    } = e.target.elements;
+    fieldset.disabled = true;
+    contract.create_dao({
+      dao_owner_id: currentUser.accountId,
+      name: name_prompt.value,
+      description: description_prompt.value,
+      icon: icon_prompt.value ?? ''
+    }, BOATLOAD_OF_GAS, (0, _big.default)('1').times(10 ** 25).toFixed());
+  };
+
   const onJobCreation = e => {
     e.preventDefault();
     const {
@@ -96195,7 +96345,10 @@ const App = _ref => {
       job_id: job_id.value,
       application: application_prompt.value
     }, BOATLOAD_OF_GAS, 0).then(_ => {
-      console.log("Successfully added application.");
+      fieldset.disabled = false;
+      application_prompt.value = '';
+      application_prompt.focus();
+      setMessage('Successfully applied for the job.');
     });
   };
 
@@ -96212,6 +96365,7 @@ const App = _ref => {
 
   const signOut = () => {
     wallet.signOut();
+    window.location.reload(false);
   };
 
   const clearMessage = () => {
@@ -96236,7 +96390,10 @@ const App = _ref => {
   }, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     index: true,
     element: /*#__PURE__*/_react.default.createElement(_CreateDao.default, {
-      version: version
+      version: version,
+      currentUser: currentUser,
+      contract: contract,
+      onDaoCreation: onDaoCreation
     })
   }), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     path: ":dao",
@@ -112676,9 +112833,9 @@ async function initContract() {
   // accounts can only have one contract deployed to them.
   nearConfig.contractName, {
     // View methods are read-only – they don't modify the state, but usually return some value
-    viewMethods: ['get_dao'],
+    viewMethods: ['get_dao', 'get_daos'],
     // Change methods can modify the state, but you don't receive the returned value when called
-    changeMethods: ['cancel_job', 'start_job', 'create_job_offering', 'apply_for_job'],
+    changeMethods: ['cancel_job', 'start_job', 'create_job_offering', 'apply_for_job', 'create_dao'],
     // Sender is the account ID to initialize transactions.
     // getAccountId() will return empty string if user is still unauthorized
     sender: walletConnection.getAccountId()
@@ -112752,7 +112909,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54774" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58392" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

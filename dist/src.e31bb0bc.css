@@ -9377,9 +9377,13 @@ fieldset {
   margin-right: 1em;
 }
 
-button:not(#react-burger-menu-btn) {
+button:not(#react-burger-menu-btn):not(.login) {
   background-color: transparent!important;
   border-radius: 0.5rem!important;
+}
+
+button.login {
+  background-color: cornflowerblue!important;
 }
 
 button:hover:not(#react-burger-menu-btn) {
@@ -9399,11 +9403,17 @@ textarea {
 }
 
 .preserve-newline {
-  white-space: pre-line;
+  white-space: pre-wrap;
 }
 
 .bigger-font {
   font-size: 1.9rem;
+}
+
+.dao-icon {
+  vertical-align: middle;
+  width: 48px;
+  height: 48px;
 }
 
 /*# sourceMappingURL=/src.e31bb0bc.css.map */

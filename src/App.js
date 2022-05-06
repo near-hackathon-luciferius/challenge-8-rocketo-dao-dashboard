@@ -93,6 +93,25 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
       })
   }
 
+  const onDaoCreation = (e) => {
+    e.preventDefault();
+
+    const { fieldset, name_prompt, description_prompt, icon_prompt } = e.target.elements;
+    
+    fieldset.disabled = true;
+
+    contract.create_dao(
+      {
+        dao_owner_id: currentUser.accountId,
+        name: name_prompt.value,
+        description: description_prompt.value,
+        icon: icon_prompt.value ?? ''
+      },
+      BOATLOAD_OF_GAS,
+      Big('1').times(10 ** 25).toFixed()
+    )
+  }
+
   const onJobCreation = (e) => {
     e.preventDefault();
 
@@ -131,7 +150,10 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
       BOATLOAD_OF_GAS,
       0
     ).then((_) => {
-      console.log("Successfully added application.");
+      fieldset.disabled = false;
+      application_prompt.value = '';
+      application_prompt.focus();
+      setMessage('Successfully applied for the job.');
     })
   }
   
@@ -149,6 +171,7 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
 
   const signOut = () => {
     wallet.signOut();
+    window.location.reload(false);
   };
 
   const clearMessage = () => {
@@ -162,7 +185,7 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
   return (
     <Routes>
       <Route path="/" element={<Layout currentUser={currentUser} signIn={signIn} signOut={signOut} clearMessage={clearMessage} message={message}/>}>
-        <Route index element={<CreateDao version={version}/>}/>
+        <Route index element={<CreateDao version={version} currentUser={currentUser} contract={contract} onDaoCreation={onDaoCreation}/>}/>
         <Route path=":dao" element={<DaoLayout setDao={setDao}/>}>
           <Route index element={<DaoDashboard daoData={daoData} loaded={loaded}/>}/>
           <Route path="jobs">

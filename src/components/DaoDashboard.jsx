@@ -34,7 +34,7 @@ export default function DaoDashboard({daoData, loading}) {
   return (
     <>
       <header>
-          <h1>{daoData.name} Dashboard</h1>
+          <h1>{daoData.name} Dashboard {daoData.icon ? <img src={daoData.icon} alt='DAO icon' className='dao-icon'/>: null}</h1>
       </header>
       <div className='flex flex-row justify-between'>
         <Link className="bm-item menu-item flex-grow medium-margin-right" to='members'>
@@ -83,7 +83,7 @@ export default function DaoDashboard({daoData, loading}) {
           </div>
         </Link>
       </div>
-      <p className='bigger-font'>
+      <p className='bigger-font preserve-newline'>
           {daoData.description}
       </p>
     </>

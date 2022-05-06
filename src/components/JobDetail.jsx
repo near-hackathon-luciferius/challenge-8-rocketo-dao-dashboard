@@ -57,7 +57,7 @@ const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob
                  </div>
                  <div className='flex flex-row-wrap justify-between'>
                     <div className="details-view flex flex-col flex-grow medium-margin-right">
-                      <div className='margin-row-small text-bigger'>
+                      <div className='margin-row-small text-bigger preserve-newline'>
                         {jobData.description}
                       </div>
                       <div className='flex justify-between margin-row-small'>
@@ -90,7 +90,7 @@ const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob
                         </div>
                       : null}
                  </div>
-                 {(dao !== currentUser.accountId) ? <div className="margin-row-big"><ApplicationForm onApplyForJob={onApplyForJob} jobId={jobData.id}/></div> : null}
+                 {(dao !== currentUser.accountId && jobData.state === 'Open') ? <div className="margin-row-big"><ApplicationForm onApplyForJob={onApplyForJob} jobId={jobData.id}/></div> : null}
           </>
 }
 

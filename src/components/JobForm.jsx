@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, Button } from 'react-materialize';
+import { TextInput, Button, Textarea } from 'react-materialize';
 
 export default function JobForm({ onJobCreation }) {
   return (
@@ -15,8 +15,7 @@ export default function JobForm({ onJobCreation }) {
                   label="The name of the job."
                   required
             />
-            <TextInput
-                  autoComplete="off"
+            <Textarea
                   id="description_prompt"
                   label="A detailed description of the job."
                   required

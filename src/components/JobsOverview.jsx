@@ -39,7 +39,7 @@ const JobsOverview = ({daoData, loaded, currentUser, onJobCreation}) => {
                    <h1>{daoData.name}'s Jobs Board</h1>
                  </header>
                   <h5>Open Jobs</h5>
-                  {daoData.jobs.length > 0
+                  {openJobs.length > 0
                   ? openJobs.map(chunk =>
                     <div className="row">
                       {chunk.map(job => 
@@ -48,7 +48,7 @@ const JobsOverview = ({daoData, loaded, currentUser, onJobCreation}) => {
                             <div className="card">
                               <div className="card-title">{job.name}</div>
                               <div className="card-content">
-                                <p>{job.description}</p>
+                                <p className='preserve-newline'>{job.description}</p>
                               </div>
                             </div>
                           </Link>
@@ -58,7 +58,7 @@ const JobsOverview = ({daoData, loaded, currentUser, onJobCreation}) => {
                         Currently there are no open jobs available.
                     </p>}
                   <h5>Active Jobs</h5>
-                  {daoData.jobs.length > 0
+                  {runningJobs.length > 0
                   ? runningJobs.map(chunk =>
                     <div className="row">
                       {chunk.map(job => 
@@ -67,7 +67,7 @@ const JobsOverview = ({daoData, loaded, currentUser, onJobCreation}) => {
                             <div className="card">
                               <div className="card-title">{job.name}</div>
                               <div className="card-content">
-                                <p>{job.description}</p>
+                                <p className='preserve-newline'>{job.description}</p>
                               </div>
                             </div>
                           </Link>
@@ -77,7 +77,7 @@ const JobsOverview = ({daoData, loaded, currentUser, onJobCreation}) => {
                         Currently there are no active jobs.
                     </p>}
                   <h5>Canceled Jobs</h5>
-                  {daoData.jobs.length > 0
+                  {canceledJobs.length > 0
                   ? canceledJobs.map(chunk =>
                     <div className="row">
                       {chunk.map(job => 
@@ -86,7 +86,7 @@ const JobsOverview = ({daoData, loaded, currentUser, onJobCreation}) => {
                             <div className="card">
                               <div className="card-title">{job.name}</div>
                               <div className="card-content">
-                                <p>{job.description}</p>
+                                <p className='preserve-newline'>{job.description}</p>
                               </div>
                             </div>
                           </Link>
