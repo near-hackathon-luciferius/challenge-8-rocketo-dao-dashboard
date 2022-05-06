@@ -81839,13 +81839,6 @@ function DaoDashboard(_ref) {
   const [members, setMembers] = (0, _react.useState)('');
   const [tasks, setTasks] = (0, _react.useState)('');
   const [jobs, setJobs] = (0, _react.useState)('');
-
-  Array.prototype.selectMany = function (fn) {
-    return this.map(fn).reduce(function (x, y) {
-      return x.concat(y);
-    }, []);
-  };
-
   (0, _react.useEffect)(() => {
     if (!daoData.jobs) {
       return;
@@ -81853,7 +81846,9 @@ function DaoDashboard(_ref) {
 
     setJobs(daoData.jobs.length);
     setTasks(5);
-    setMembers(daoData.jobs.map(j => j.contracted).concat(daoData.jobs.selectMany(j => j.applicants).map(a => a.applicant)).filter((value, index, array) => array.indexOf(value) === index && value).length + 1);
+    setMembers(daoData.jobs.map(j => j.contracted).concat(daoData.jobs.map(j => j.applicants).reduce(function (x, y) {
+      return x.concat(y);
+    }, []).map(a => a.applicant)).filter((value, index, array) => array.indexOf(value) === index && value).length + 1);
   }, [daoData]);
 
   if (!loaded) {
@@ -83423,19 +83418,14 @@ const MembersOverview = _ref => {
     dao
   } = (0, _reactRouterDom.useParams)();
   const [members, setMembers] = (0, _react.useState)();
-
-  Array.prototype.selectMany = function (fn) {
-    return this.map(fn).reduce(function (x, y) {
-      return x.concat(y);
-    }, []);
-  };
-
   (0, _react.useEffect)(() => {
     if (!daoData.jobs) {
       return;
     }
 
-    let data = daoData.jobs.map(j => j.contracted).concat(daoData.jobs.selectMany(j => j.applicants).map(a => a.applicant)).filter((value, index, array) => array.indexOf(value) === index && value);
+    let data = daoData.jobs.map(j => j.contracted).concat(daoData.jobs.map(j => j.applicants).reduce(function (x, y) {
+      return x.concat(y);
+    }, []).map(a => a.applicant)).filter((value, index, array) => array.indexOf(value) === index && value);
     setMembers(splitArrayIntoChunksOfLen(data, 3));
   }, [daoData]);
 
@@ -96416,7 +96406,8 @@ const App = _ref => {
     return /*#__PURE__*/_react.default.createElement(_SignIn.default, {
       signIn: signIn
     });
-  }
+  } // Voting https://snapshot.org/#/sushigov.eth
+
 
   return /*#__PURE__*/_react.default.createElement(_reactRouterDom.Routes, null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     path: "/",
@@ -112945,7 +112936,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64574" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50067" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

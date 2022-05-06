@@ -10,10 +10,6 @@ export default function DaoDashboard({daoData, loaded}) {
   const [tasks, setTasks] = useState('');
   const [jobs, setJobs] = useState('');
 
-  Array.prototype.selectMany = function (fn) {
-    return this.map(fn).reduce(function (x, y) { return x.concat(y); }, []);
-  };
-
   useEffect(() => {
     if(!daoData.jobs){
       return;
@@ -22,7 +18,7 @@ export default function DaoDashboard({daoData, loaded}) {
     setJobs(daoData.jobs.length);
     setTasks(5);
     setMembers(daoData.jobs.map((j) => j.contracted)
-                      .concat(daoData.jobs.selectMany((j) => j.applicants)
+                      .concat(daoData.jobs.map((j) => j.applicants).reduce(function (x, y) { return x.concat(y); }, [])
                                     .map((a) => a.applicant))
                       .filter((value, index, array) => array.indexOf(value) === index && value).length +1);
   }, [daoData]);

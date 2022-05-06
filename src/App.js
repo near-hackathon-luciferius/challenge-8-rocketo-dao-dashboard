@@ -179,7 +179,7 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
   if(!currentUser){
     return <SignIn signIn={signIn}/>;
   }
-
+  // Voting https://snapshot.org/#/sushigov.eth
   return (
     <Routes>
       <Route path="/" element={<Layout currentUser={currentUser} signIn={signIn} signOut={signOut} clearMessage={clearMessage} message={message}/>}>
