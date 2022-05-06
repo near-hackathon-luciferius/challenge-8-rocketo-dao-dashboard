@@ -309,12 +309,12 @@ fieldset {
   margin-right: 1em;
 }
 
-button {
+button:not(#react-burger-menu-btn) {
   background-color: transparent!important;
   border-radius: 0.5rem!important;
 }
 
-button:hover {
+button:hover:not(#react-burger-menu-btn) {
   background-color: cornflowerblue!important;
 }
 
@@ -332,4 +332,8 @@ textarea {
 
 .preserve-newline {
   white-space: pre-line;
+}
+
+.bigger-font {
+  font-size: 1.9rem;
 }

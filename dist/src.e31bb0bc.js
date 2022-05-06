@@ -81623,7 +81623,64 @@ function CreateDao(_ref) {
     id: "page-wrapper"
   }, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, "NEAR Challenge #8 - DAO Dashboard - ", version)), /*#__PURE__*/_react.default.createElement("p", null, "Create a new DAO or enter existing ones.")));
 }
-},{"react":"../node_modules/react/index.js"}],"components/DaoDashboard.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js"}],"../node_modules/@mui/icons-material/WorkOutlineOutlined.js":[function(require,module,exports) {
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _createSvgIcon = _interopRequireDefault(require("./utils/createSvgIcon"));
+
+var _jsxRuntime = require("react/jsx-runtime");
+
+var _default = (0, _createSvgIcon.default)( /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
+  d: "M14 6V4h-4v2h4zM4 8v11h16V8H4zm16-2c1.11 0 2 .89 2 2v11c0 1.11-.89 2-2 2H4c-1.11 0-2-.89-2-2l.01-11c0-1.11.88-2 1.99-2h4V4c0-1.11.89-2 2-2h4c1.11 0 2 .89 2 2v2h4z"
+}), 'WorkOutlineOutlined');
+
+exports.default = _default;
+},{"@babel/runtime/helpers/interopRequireDefault":"../node_modules/@babel/runtime/helpers/interopRequireDefault.js","./utils/createSvgIcon":"../node_modules/@mui/icons-material/utils/createSvgIcon.js","react/jsx-runtime":"../node_modules/react/jsx-runtime.js"}],"../node_modules/@mui/icons-material/TaskOutlined.js":[function(require,module,exports) {
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _createSvgIcon = _interopRequireDefault(require("./utils/createSvgIcon"));
+
+var _jsxRuntime = require("react/jsx-runtime");
+
+var _default = (0, _createSvgIcon.default)( /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
+  d: "M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zm-9.18-6.95L7.4 14.46 10.94 18l5.66-5.66-1.41-1.41-4.24 4.24-2.13-2.12z"
+}), 'TaskOutlined');
+
+exports.default = _default;
+},{"@babel/runtime/helpers/interopRequireDefault":"../node_modules/@babel/runtime/helpers/interopRequireDefault.js","./utils/createSvgIcon":"../node_modules/@mui/icons-material/utils/createSvgIcon.js","react/jsx-runtime":"../node_modules/react/jsx-runtime.js"}],"../node_modules/@mui/icons-material/PeopleAltOutlined.js":[function(require,module,exports) {
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _createSvgIcon = _interopRequireDefault(require("./utils/createSvgIcon"));
+
+var _jsxRuntime = require("react/jsx-runtime");
+
+var _default = (0, _createSvgIcon.default)( /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
+  d: "M16.67 13.13C18.04 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.57-3.47-6.33-3.87zM15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4c-.47 0-.91.1-1.33.24C14.5 5.27 15 6.58 15 8s-.5 2.73-1.33 3.76c.42.14.86.24 1.33.24zm-6 0c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0-6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 7c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4zm6 5H3v-.99C3.2 16.29 6.3 15 9 15s5.8 1.29 6 2v1z"
+}), 'PeopleAltOutlined');
+
+exports.default = _default;
+},{"@babel/runtime/helpers/interopRequireDefault":"../node_modules/@babel/runtime/helpers/interopRequireDefault.js","./utils/createSvgIcon":"../node_modules/@mui/icons-material/utils/createSvgIcon.js","react/jsx-runtime":"../node_modules/react/jsx-runtime.js"}],"components/DaoDashboard.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -81631,22 +81688,106 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = DaoDashboard;
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
 var _reactRouterDom = require("react-router-dom");
 
+var _WorkOutlineOutlined = _interopRequireDefault(require("@mui/icons-material/WorkOutlineOutlined"));
+
+var _TaskOutlined = _interopRequireDefault(require("@mui/icons-material/TaskOutlined"));
+
+var _PeopleAltOutlined = _interopRequireDefault(require("@mui/icons-material/PeopleAltOutlined"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function DaoDashboard(_ref) {
   let {
-    version
+    daoData,
+    loading
   } = _ref;
   const {
     dao
   } = (0, _reactRouterDom.useParams)();
-  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, "NEAR Challenge #8 - DAO Dashboard - ", version)), /*#__PURE__*/_react.default.createElement("p", null, "Dashboard for ", dao, "."));
+  const [members, setMembers] = (0, _react.useState)('');
+  const [tasks, setTasks] = (0, _react.useState)('');
+  const [jobs, setJobs] = (0, _react.useState)('');
+  (0, _react.useEffect)(() => {
+    if (!daoData.jobs) {
+      return;
+    }
+
+    setJobs(daoData.jobs.length);
+    setTasks(Math.floor(Math.random() * 10));
+    setMembers(Math.floor(Math.random() * 100));
+  }, [daoData]);
+
+  if (loading) {
+    /*#__PURE__*/
+    _react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, dao, " Dashboard")), /*#__PURE__*/_react.default.createElement("p", null, "Loading..."));
+  }
+
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, daoData.name, " Dashboard")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "flex flex-row justify-between"
+  }, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    className: "bm-item menu-item flex-grow medium-margin-right",
+    to: "members"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "card card-stats"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "card-body"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "row"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "col s5 text-center"
+  }, /*#__PURE__*/_react.default.createElement(_PeopleAltOutlined.default, {
+    className: "icon-big"
+  }), /*#__PURE__*/_react.default.createElement("p", {
+    className: "small"
+  }, "Members")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "col s7 numbers"
+  }, /*#__PURE__*/_react.default.createElement("h5", null, members)))))), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    className: "bm-item menu-item flex-grow medium-margin-right",
+    to: "tasks"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "card card-stats"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "card-body"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "row"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "col s5 text-center"
+  }, /*#__PURE__*/_react.default.createElement(_TaskOutlined.default, {
+    className: "icon-big"
+  }), /*#__PURE__*/_react.default.createElement("p", {
+    className: "small"
+  }, "Tasks")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "col s7 numbers"
+  }, /*#__PURE__*/_react.default.createElement("h5", null, tasks)))))), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    className: "bm-item menu-item flex-grow",
+    to: "jobs"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "card card-stats"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "card-body"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "row"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "col s5 text-center"
+  }, /*#__PURE__*/_react.default.createElement(_WorkOutlineOutlined.default, {
+    className: "icon-big"
+  }), /*#__PURE__*/_react.default.createElement("p", {
+    className: "small"
+  }, "Jobs")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "col s7 numbers"
+  }, /*#__PURE__*/_react.default.createElement("h5", null, jobs))))))), /*#__PURE__*/_react.default.createElement("p", {
+    className: "bigger-font"
+  }, daoData.description));
 }
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js"}],"components/JobForm.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","@mui/icons-material/WorkOutlineOutlined":"../node_modules/@mui/icons-material/WorkOutlineOutlined.js","@mui/icons-material/TaskOutlined":"../node_modules/@mui/icons-material/TaskOutlined.js","@mui/icons-material/PeopleAltOutlined":"../node_modules/@mui/icons-material/PeopleAltOutlined.js"}],"components/JobForm.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -96105,7 +96246,8 @@ const App = _ref => {
   }, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     index: true,
     element: /*#__PURE__*/_react.default.createElement(_DaoDashboard.default, {
-      version: version
+      daoData: daoData,
+      loaded: loaded
     })
   }), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     path: "jobs"
@@ -96126,11 +96268,10 @@ const App = _ref => {
       onStartJob: onStartJob,
       onApplyForJob: onApplyForJob
     })
-  }), currentUser.accountId == dao ? /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
+  }), currentUser.accountId === dao ? /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     path: ":job/applications",
     element: /*#__PURE__*/_react.default.createElement(_ApplicationOverview.default, {
-      daoData: daoData,
-      loaded: loaded
+      daoData: daoData
     })
   }) : null), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     path: "tasks"
@@ -112611,7 +112752,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53140" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54774" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

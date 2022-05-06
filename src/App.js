@@ -164,12 +164,12 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
       <Route path="/" element={<Layout currentUser={currentUser} signIn={signIn} signOut={signOut} clearMessage={clearMessage} message={message}/>}>
         <Route index element={<CreateDao version={version}/>}/>
         <Route path=":dao" element={<DaoLayout setDao={setDao}/>}>
-          <Route index element={<DaoDashboard version={version}/>}/>
+          <Route index element={<DaoDashboard daoData={daoData} loaded={loaded}/>}/>
           <Route path="jobs">
             <Route index element={<JobsOverview daoData={daoData} loaded={loaded} onJobCreation={onJobCreation} currentUser={currentUser}/>}/>
             <Route path=":job" element={<JobDetail daoData={daoData} currentUser={currentUser} onCancelJob={onCancelJob} onStartJob={onStartJob} onApplyForJob={onApplyForJob}/>}/>
             {currentUser.accountId === dao
-              ? <Route path=":job/applications" element={<ApplicationOverview daoData={daoData} loaded={loaded}/>}/>
+              ? <Route path=":job/applications" element={<ApplicationOverview daoData={daoData}/>}/>
               : null
             }
           </Route>
