@@ -1,16 +1,31 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import Iframe from 'react-iframe';
 
-const TasksOverview = () => {
+const TasksOverview = ({daoData, loaded}) => {
   const { dao } = useParams();
+
+  if(!loaded){
+    return <>
+              <header>
+                  <h1>{dao} Dashboard</h1>
+              </header>
+              <p>
+                  Loading...
+              </p>
+            </>
+  }
   
    return <>
                  <header>
-                   <h1>{dao}'s Tasks Board</h1>
+                   <h1>{daoData.name}'s Tasks Board</h1>
                  </header>
-                 <p>
-                    Tasks here.
-                 </p>
+                 <div>
+                    <Iframe url={"https://trello.com/b/Ywm3W9HB.html"}
+                            position="relative"
+                            overflow="hidden"
+                            className='task-iframe'/>
+                  </div>
           </>
 }
 

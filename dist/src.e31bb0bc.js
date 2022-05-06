@@ -81831,7 +81831,7 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 function DaoDashboard(_ref) {
   let {
     daoData,
-    loading
+    loaded
   } = _ref;
   const {
     dao
@@ -81849,9 +81849,8 @@ function DaoDashboard(_ref) {
     setMembers(Math.floor(Math.random() * 100));
   }, [daoData]);
 
-  if (loading) {
-    /*#__PURE__*/
-    _react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, dao, " Dashboard")), /*#__PURE__*/_react.default.createElement("p", null, "Loading..."));
+  if (!loaded) {
+    return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, dao, " Dashboard")), /*#__PURE__*/_react.default.createElement("p", null, "Loading..."));
   }
 
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, daoData.name, " Dashboard ", daoData.icon ? /*#__PURE__*/_react.default.createElement("img", {
@@ -83416,30 +83415,6 @@ const MembersOverview = () => {
 
 var _default = MembersOverview;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js"}],"components/MemberDetail.jsx":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _reactRouterDom = require("react-router-dom");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-const MemberDetail = () => {
-  const {
-    dao,
-    member
-  } = (0, _reactRouterDom.useParams)();
-  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, member, "'s Details")), /*#__PURE__*/_react.default.createElement("p", null, "Member ", member, " of ", dao, "."));
-};
-
-var _default = MemberDetail;
-exports.default = _default;
 },{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js"}],"components/TasksOverview.jsx":[function(require,module,exports) {
 "use strict";
 
@@ -83452,42 +83427,34 @@ var _react = _interopRequireDefault(require("react"));
 
 var _reactRouterDom = require("react-router-dom");
 
+var _reactIframe = _interopRequireDefault(require("react-iframe"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const TasksOverview = () => {
+const TasksOverview = _ref => {
+  let {
+    daoData,
+    loaded
+  } = _ref;
   const {
     dao
   } = (0, _reactRouterDom.useParams)();
-  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, dao, "'s Tasks Board")), /*#__PURE__*/_react.default.createElement("p", null, "Tasks here."));
+
+  if (!loaded) {
+    return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, dao, " Dashboard")), /*#__PURE__*/_react.default.createElement("p", null, "Loading..."));
+  }
+
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, daoData.name, "'s Tasks Board")), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(_reactIframe.default, {
+    url: "https://trello.com/b/Ywm3W9HB.html",
+    position: "relative",
+    overflow: "hidden",
+    className: "task-iframe"
+  })));
 };
 
 var _default = TasksOverview;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js"}],"components/TaskDetail.jsx":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _reactRouterDom = require("react-router-dom");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-const TaskDetail = () => {
-  const {
-    dao,
-    task
-  } = (0, _reactRouterDom.useParams)();
-  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, task, "'s Details")), /*#__PURE__*/_react.default.createElement("p", null, "Task ", task, " of ", dao, "."));
-};
-
-var _default = TaskDetail;
-exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js"}],"../node_modules/@mui/icons-material/ContentCopyOutlined.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","react-iframe":"../node_modules/react-iframe/dist/es/iframe.js"}],"../node_modules/@mui/icons-material/ContentCopyOutlined.js":[function(require,module,exports) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -96192,11 +96159,7 @@ var _JobDetail = _interopRequireDefault(require("./components/JobDetail"));
 
 var _MembersOverview = _interopRequireDefault(require("./components/MembersOverview"));
 
-var _MemberDetail = _interopRequireDefault(require("./components/MemberDetail"));
-
 var _TasksOverview = _interopRequireDefault(require("./components/TasksOverview"));
-
-var _TaskDetail = _interopRequireDefault(require("./components/TaskDetail"));
 
 var _ApplicationOverview = _interopRequireDefault(require("./components/ApplicationOverview"));
 
@@ -96434,10 +96397,10 @@ const App = _ref => {
     path: "tasks"
   }, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     index: true,
-    element: /*#__PURE__*/_react.default.createElement(_TasksOverview.default, null)
-  }), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
-    path: ":task",
-    element: /*#__PURE__*/_react.default.createElement(_TaskDetail.default, null)
+    element: /*#__PURE__*/_react.default.createElement(_TasksOverview.default, {
+      daoData: daoData,
+      loaded: loaded
+    })
   })), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     path: "members"
   }, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
@@ -96446,9 +96409,6 @@ const App = _ref => {
       version: version,
       nearConfig: nearConfig
     })
-  }), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
-    path: ":member",
-    element: /*#__PURE__*/_react.default.createElement(_MemberDetail.default, null)
   })), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     path: "*",
     element: /*#__PURE__*/_react.default.createElement(_2.default, null)
@@ -96457,7 +96417,7 @@ const App = _ref => {
 
 var _default = App;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","./components/SignIn":"components/SignIn.jsx","./layout":"layout.js","./dao-layout":"dao-layout.js","./components/CreateDao":"components/CreateDao.jsx","./components/DaoDashboard":"components/DaoDashboard.jsx","./components/JobsOverview":"components/JobsOverview.jsx","./components/JobDetail":"components/JobDetail.jsx","./components/MembersOverview":"components/MembersOverview.jsx","./components/MemberDetail":"components/MemberDetail.jsx","./components/TasksOverview":"components/TasksOverview.jsx","./components/TaskDetail":"components/TaskDetail.jsx","./components/ApplicationOverview":"components/ApplicationOverview.jsx","./components/404.jsx":"components/404.jsx","materialize-css/dist/css/materialize.css":"../node_modules/materialize-css/dist/css/materialize.css","./App.css":"App.css","big.js":"../node_modules/big.js/big.js","react-router-dom":"../node_modules/react-router-dom/index.js","../package.json":"../package.json","materialize-css":"../node_modules/materialize-css/dist/js/materialize.js"}],"config.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./components/SignIn":"components/SignIn.jsx","./layout":"layout.js","./dao-layout":"dao-layout.js","./components/CreateDao":"components/CreateDao.jsx","./components/DaoDashboard":"components/DaoDashboard.jsx","./components/JobsOverview":"components/JobsOverview.jsx","./components/JobDetail":"components/JobDetail.jsx","./components/MembersOverview":"components/MembersOverview.jsx","./components/TasksOverview":"components/TasksOverview.jsx","./components/ApplicationOverview":"components/ApplicationOverview.jsx","./components/404.jsx":"components/404.jsx","materialize-css/dist/css/materialize.css":"../node_modules/materialize-css/dist/css/materialize.css","./App.css":"App.css","big.js":"../node_modules/big.js/big.js","react-router-dom":"../node_modules/react-router-dom/index.js","../package.json":"../package.json","materialize-css":"../node_modules/materialize-css/dist/js/materialize.js"}],"config.js":[function(require,module,exports) {
 const CONTRACT_NAME = undefined || 'dao-dashboard.cryptosketches.testnet';
 
 function getConfig(env) {
@@ -112909,7 +112869,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58392" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62580" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

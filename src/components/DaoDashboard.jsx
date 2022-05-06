@@ -4,7 +4,7 @@ import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
 import TaskOutlinedIcon from '@mui/icons-material/TaskOutlined';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 
-export default function DaoDashboard({daoData, loading}) {
+export default function DaoDashboard({daoData, loaded}) {
   const { dao } = useParams();
   const [members, setMembers] = useState('');
   const [tasks, setTasks] = useState('');
@@ -20,15 +20,15 @@ export default function DaoDashboard({daoData, loading}) {
     setMembers(Math.floor(Math.random() * 100));
   }, [daoData]);
 
-  if(loading){
-    <>
-      <header>
-          <h1>{dao} Dashboard</h1>
-      </header>
-      <p>
-          Loading...
-      </p>
-    </>
+  if(!loaded){
+    return <>
+              <header>
+                  <h1>{dao} Dashboard</h1>
+              </header>
+              <p>
+                  Loading...
+              </p>
+            </>
   }
 
   return (

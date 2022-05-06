@@ -7,9 +7,7 @@ import DaoDashboard from './components/DaoDashboard';
 import JobsOverview from './components/JobsOverview';
 import JobDetail from './components/JobDetail';
 import MembersOverview from './components/MembersOverview';
-import MemberDetail from './components/MemberDetail';
 import TasksOverview from './components/TasksOverview';
-import TaskDetail from './components/TaskDetail';
 import ApplicationOverview from './components/ApplicationOverview';
 import NotFound from './components/404.jsx';
 import 'materialize-css/dist/css/materialize.css'
@@ -197,12 +195,10 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
             }
           </Route>
           <Route path="tasks">
-            <Route index element={<TasksOverview/>}/>
-            <Route path=":task" element={<TaskDetail/>}/>
+            <Route index element={<TasksOverview daoData={daoData} loaded={loaded}/>}/>
           </Route>
           <Route path="members">
             <Route index element={<MembersOverview version={version} nearConfig={nearConfig}/>}/>
-            <Route path=":member" element={<MemberDetail/>}/>
           </Route>
           <Route path="*" element={<NotFound/>}/>
         </Route>

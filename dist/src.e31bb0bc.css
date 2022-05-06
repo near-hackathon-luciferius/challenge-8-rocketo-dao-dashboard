@@ -9123,6 +9123,13 @@ body, html {
   height: 650px;
 }
 
+.task-iframe {
+  background: #bdc3c788;
+  border: None;
+  width: 100%;
+  height: 650px;
+}
+
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
