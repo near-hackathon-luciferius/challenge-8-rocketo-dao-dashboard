@@ -10,14 +10,21 @@ export default function DaoDashboard({daoData, loaded}) {
   const [tasks, setTasks] = useState('');
   const [jobs, setJobs] = useState('');
 
+  Array.prototype.selectMany = function (fn) {
+    return this.map(fn).reduce(function (x, y) { return x.concat(y); }, []);
+  };
+
   useEffect(() => {
     if(!daoData.jobs){
       return;
     }
     
     setJobs(daoData.jobs.length);
-    setTasks(Math.floor(Math.random() * 10));
-    setMembers(Math.floor(Math.random() * 100));
+    setTasks(5);
+    setMembers(daoData.jobs.map((j) => j.contracted)
+                      .concat(daoData.jobs.selectMany((j) => j.applicants)
+                                    .map((a) => a.applicant))
+                      .filter((value, index, array) => array.indexOf(value) === index && value).length +1);
   }, [daoData]);
 
   if(!loaded){

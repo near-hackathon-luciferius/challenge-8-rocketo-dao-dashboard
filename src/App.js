@@ -198,7 +198,7 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
             <Route index element={<TasksOverview daoData={daoData} loaded={loaded}/>}/>
           </Route>
           <Route path="members">
-            <Route index element={<MembersOverview version={version} nearConfig={nearConfig}/>}/>
+            <Route index element={<MembersOverview daoData={daoData}/>}/>
           </Route>
           <Route path="*" element={<NotFound/>}/>
         </Route>

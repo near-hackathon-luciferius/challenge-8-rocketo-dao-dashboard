@@ -81839,14 +81839,21 @@ function DaoDashboard(_ref) {
   const [members, setMembers] = (0, _react.useState)('');
   const [tasks, setTasks] = (0, _react.useState)('');
   const [jobs, setJobs] = (0, _react.useState)('');
+
+  Array.prototype.selectMany = function (fn) {
+    return this.map(fn).reduce(function (x, y) {
+      return x.concat(y);
+    }, []);
+  };
+
   (0, _react.useEffect)(() => {
     if (!daoData.jobs) {
       return;
     }
 
     setJobs(daoData.jobs.length);
-    setTasks(Math.floor(Math.random() * 10));
-    setMembers(Math.floor(Math.random() * 100));
+    setTasks(5);
+    setMembers(daoData.jobs.map(j => j.contracted).concat(daoData.jobs.selectMany(j => j.applicants).map(a => a.applicant)).filter((value, index, array) => array.indexOf(value) === index && value).length + 1);
   }, [daoData]);
 
   if (!loaded) {
@@ -83400,17 +83407,87 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
 var _reactRouterDom = require("react-router-dom");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
-const MembersOverview = () => {
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+const MembersOverview = _ref => {
+  let {
+    daoData
+  } = _ref;
   const {
     dao
   } = (0, _reactRouterDom.useParams)();
-  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, dao, "'s Members")), /*#__PURE__*/_react.default.createElement("p", null, "Members here."));
+  const [members, setMembers] = (0, _react.useState)();
+
+  Array.prototype.selectMany = function (fn) {
+    return this.map(fn).reduce(function (x, y) {
+      return x.concat(y);
+    }, []);
+  };
+
+  (0, _react.useEffect)(() => {
+    if (!daoData.jobs) {
+      return;
+    }
+
+    let data = daoData.jobs.map(j => j.contracted).concat(daoData.jobs.selectMany(j => j.applicants).map(a => a.applicant)).filter((value, index, array) => array.indexOf(value) === index && value);
+    setMembers(splitArrayIntoChunksOfLen(data, 3));
+  }, [daoData]);
+
+  const splitArrayIntoChunksOfLen = (arr, len) => {
+    var chunks = [],
+        i = 0,
+        n = arr.length;
+
+    while (i < n) {
+      chunks.push(arr.slice(i, i += len));
+    }
+
+    return chunks;
+  };
+
+  if (!members) {
+    return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, dao, "'s Members")), /*#__PURE__*/_react.default.createElement("h1", null, "Loading..."));
+  }
+
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, daoData.name, "'s Members")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "row"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "col s4"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "card-title flex flex-row"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "min-margin-right"
+  }, dao)), /*#__PURE__*/_react.default.createElement("div", {
+    className: "card-content"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "flex justify-between margin-row-small"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "text-unimportant min-margin-right"
+  }, "Role:"), /*#__PURE__*/_react.default.createElement("div", null, "Admin")))))), members.length > 0 ? members.map(chunk => /*#__PURE__*/_react.default.createElement("div", {
+    className: "row"
+  }, chunk.map(member => /*#__PURE__*/_react.default.createElement("div", {
+    className: "col s4"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "card-title flex flex-row"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "min-margin-right"
+  }, member)), /*#__PURE__*/_react.default.createElement("div", {
+    className: "card-content"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "flex justify-between margin-row-small"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "text-unimportant min-margin-right"
+  }, "Role:"), /*#__PURE__*/_react.default.createElement("div", null, "User")))))))) : /*#__PURE__*/_react.default.createElement("p", null, "Currently there are no members in this DAO active."));
 };
 
 var _default = MembersOverview;
@@ -96406,8 +96483,7 @@ const App = _ref => {
   }, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     index: true,
     element: /*#__PURE__*/_react.default.createElement(_MembersOverview.default, {
-      version: version,
-      nearConfig: nearConfig
+      daoData: daoData
     })
   })), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     path: "*",
@@ -112869,7 +112945,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62580" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64574" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
