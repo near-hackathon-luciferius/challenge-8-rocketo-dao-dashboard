@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/challenge-8-rocketo-dao-dashboard/static/css/main.a863a2eb.chunk.css",
-    "main.js": "/challenge-8-rocketo-dao-dashboard/static/js/main.2ad66b3a.chunk.js",
-    "main.js.map": "/challenge-8-rocketo-dao-dashboard/static/js/main.2ad66b3a.chunk.js.map",
+    "main.js": "/challenge-8-rocketo-dao-dashboard/static/js/main.d122a17a.chunk.js",
+    "main.js.map": "/challenge-8-rocketo-dao-dashboard/static/js/main.d122a17a.chunk.js.map",
     "runtime-main.js": "/challenge-8-rocketo-dao-dashboard/static/js/runtime-main.bdefdb30.js",
     "runtime-main.js.map": "/challenge-8-rocketo-dao-dashboard/static/js/runtime-main.bdefdb30.js.map",
     "static/css/2.fc8f8e93.chunk.css": "/challenge-8-rocketo-dao-dashboard/static/css/2.fc8f8e93.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.fc8f8e93.chunk.css",
     "static/js/2.5b3b680c.chunk.js",
     "static/css/main.a863a2eb.chunk.css",
-    "static/js/main.2ad66b3a.chunk.js"
+    "static/js/main.d122a17a.chunk.js"
   ]
 }
