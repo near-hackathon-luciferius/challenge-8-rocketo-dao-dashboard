@@ -1,11 +1,17 @@
 import React, {useState} from 'react';
 import { Button, TextInput } from 'react-materialize';
+import { useNavigate } from "react-router-dom";
 
 const JobDetailAdminCommands = ({jobData, onCancelJob, onStartJob}) => {
     const [contracted, setContracted] = useState();
+    const navigate = useNavigate();
 
     const changeContracted = e => {
         setContracted(e.target.value);
+    }
+
+    const goToApplications = () => {
+        navigate("applications");
     }
 
   if(!jobData){
@@ -14,8 +20,14 @@ const JobDetailAdminCommands = ({jobData, onCancelJob, onStartJob}) => {
 
   switch(jobData.state){
       case 'InProgress':
-          return <Button large tooltip='Canceles the payment an the job offering. Important: A new job has to be created afterwards.' onClick={() => onCancelJob(jobData.id)}>Cancel Contract</Button>
-      default:
+          return <>
+                    <Button large 
+                            tooltip='Canceles the payment an the job offering. Important: A new job has to be created afterwards.' 
+                            onClick={() => onCancelJob(jobData.id)}>
+                        Cancel Contract
+                    </Button>
+                 </>
+      case 'Open':
           return <>
                     <div className="flex flex-col flex-grow medium-margin-right">
                         <TextInput
@@ -27,10 +39,15 @@ const JobDetailAdminCommands = ({jobData, onCancelJob, onStartJob}) => {
                     <Button large 
                             tooltip='Assigns the contracted and starts the job immediately.' 
                             onClick={() => onStartJob(jobData.id, contracted)}
-                            className={contracted ?'':'disabled'}>
+                            className={contracted ?'medium-margin-right':'medium-margin-right disabled'}>
                                 Assign Contracted And Start
                     </Button>
+                    <Button large 
+                            onClick={goToApplications}>
+                                View Applications
+                    </Button>
                  </>
+      default: return null;
   }
 }
 

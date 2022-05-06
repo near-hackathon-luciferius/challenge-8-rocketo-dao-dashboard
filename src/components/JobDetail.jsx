@@ -3,10 +3,12 @@ import { useParams } from 'react-router-dom';
 import Iframe from 'react-iframe';
 import Big from 'big.js';
 import JobDetailAdminCommands from './JobDetailAdminCommands';
+import ApplicationForm from './ApplicationForm';
 
-const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob}) => {
+const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob}) => {
   const { dao, job } = useParams();
   const [ jobData, setJobData ] = useState();
+  const [ jobPayment, setJobPayment ] = useState();
 
   useEffect(() => {
     if(!daoData.jobs){
@@ -14,7 +16,6 @@ const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob}) => {
     }
 
     let data = daoData.jobs.find((j) => j.id === job);
-    data.payment = Big(data.payment).div(10 ** 24).toFixed(2);
     let duration = parseInt(data.payment_cycle_in_s);
     let seconds = duration%60;
     let minutes = Math.floor((duration%(60*60))/60);
@@ -35,6 +36,7 @@ const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob}) => {
     }
     data.duration = duration;
     setJobData(data);
+    setJobPayment(Big(data.payment).div(10 ** 24).toFixed(2))
   }, [daoData, job]);
 
   if(!jobData){
@@ -64,7 +66,7 @@ const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob}) => {
                       </div>
                       <div className='flex justify-between margin-row-small'>
                         <div className='text-unimportant min-margin-right'>Total Payment:</div>
-                        <div>{jobData.payment} Ⓝ</div>
+                        <div>{jobPayment} Ⓝ</div>
                       </div>
                       <div className='flex justify-between margin-row-small'>
                         <div className='text-unimportant min-margin-right'>Contract Duration:</div>
@@ -88,6 +90,7 @@ const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob}) => {
                         </div>
                       : null}
                  </div>
+                 {(dao !== currentUser.accountId) ? <div className="margin-row-big"><ApplicationForm onApplyForJob={onApplyForJob} jobId={jobData.id}/></div> : null}
           </>
 }
 

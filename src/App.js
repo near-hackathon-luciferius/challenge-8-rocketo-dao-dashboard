@@ -10,6 +10,7 @@ import MembersOverview from './components/MembersOverview';
 import MemberDetail from './components/MemberDetail';
 import TasksOverview from './components/TasksOverview';
 import TaskDetail from './components/TaskDetail';
+import ApplicationOverview from './components/ApplicationOverview';
 import NotFound from './components/404.jsx';
 import 'materialize-css/dist/css/materialize.css'
 import './App.css';
@@ -91,10 +92,55 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
         console.log("Successfully started.");
       })
   }
+
+  const onJobCreation = (e) => {
+    e.preventDefault();
+
+    const { fieldset, name_prompt, description_prompt, payment_prompt, duration_prompt } = e.target.elements;
+    const payment = Big(payment_prompt.value).times(10 ** 24).toFixed();
+    
+    fieldset.disabled = true;
+
+    contract.create_job_offering(
+      {
+        name: name_prompt.value,
+        description: description_prompt.value,
+        payment: payment,
+        payment_cycle_in_s: duration_prompt.value
+      },
+      BOATLOAD_OF_GAS,
+      payment
+    ).then((_) => {
+      console.log("Successfully created job.");
+    })
+  }
+
+  const onApplyForJob = (e) => {
+    e.preventDefault();
+
+    const { fieldset, job_id, application_prompt } = e.target.elements;
+    
+    fieldset.disabled = true;
+    
+    contract.apply_for_job(
+      {
+        dao_owner: dao,
+        job_id: job_id.value,
+        application: application_prompt.value
+      },
+      BOATLOAD_OF_GAS,
+      0
+    ).then((_) => {
+      console.log("Successfully added application.");
+    })
+  }
   
   const signIn = () => {
     wallet.requestSignIn(
-      {contractId: nearConfig.contractName, methodNames: [contract.buy_animal.name, contract.payout.name]}, //contract requesting access
+      {contractId: nearConfig.contractName, methodNames: [contract.cancel_job.name, 
+                                                          contract.start_job.name, 
+                                                          contract.create_job_offering.name,
+                                                          contract.apply_for_job.name]}, //contract requesting access
       'NEAR Challenge #8 - DAO Dashboard', //optional name
       null, //optional URL to redirect to if the sign in was successful
       null //optional URL to redirect to if the sign in was NOT successful
@@ -103,7 +149,6 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
 
   const signOut = () => {
     wallet.signOut();
-    window.location.replace(window.location.origin + window.location.pathname);
   };
 
   const clearMessage = () => {
@@ -121,8 +166,12 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
         <Route path=":dao" element={<DaoLayout setDao={setDao}/>}>
           <Route index element={<DaoDashboard version={version}/>}/>
           <Route path="jobs">
-            <Route index element={<JobsOverview daoData={daoData} loaded={loaded}/>}/>
-            <Route path=":job" element={<JobDetail daoData={daoData} currentUser={currentUser} onCancelJob={onCancelJob} onStartJob={onStartJob}/>}/>
+            <Route index element={<JobsOverview daoData={daoData} loaded={loaded} onJobCreation={onJobCreation} currentUser={currentUser}/>}/>
+            <Route path=":job" element={<JobDetail daoData={daoData} currentUser={currentUser} onCancelJob={onCancelJob} onStartJob={onStartJob} onApplyForJob={onApplyForJob}/>}/>
+            {currentUser.accountId === dao
+              ? <Route path=":job/applications" element={<ApplicationOverview daoData={daoData} loaded={loaded}/>}/>
+              : null
+            }
           </Route>
           <Route path="tasks">
             <Route index element={<TasksOverview/>}/>

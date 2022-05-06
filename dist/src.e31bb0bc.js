@@ -81646,7 +81646,67 @@ function DaoDashboard(_ref) {
   } = (0, _reactRouterDom.useParams)();
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, "NEAR Challenge #8 - DAO Dashboard - ", version)), /*#__PURE__*/_react.default.createElement("p", null, "Dashboard for ", dao, "."));
 }
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js"}],"components/JobsOverview.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js"}],"components/JobForm.jsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = JobForm;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactMaterialize = require("react-materialize");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function JobForm(_ref) {
+  let {
+    onJobCreation
+  } = _ref;
+  return /*#__PURE__*/_react.default.createElement("form", {
+    onSubmit: onJobCreation
+  }, /*#__PURE__*/_react.default.createElement("fieldset", {
+    id: "fieldset",
+    className: "flex flex-col details-view flex-grow"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "highlight flex flex-col"
+  }, /*#__PURE__*/_react.default.createElement("h5", null, "Create a new job offering"), /*#__PURE__*/_react.default.createElement("p", null, "Add all required parameter for the new job and hit the 'Create' button."), /*#__PURE__*/_react.default.createElement(_reactMaterialize.TextInput, {
+    autoComplete: "off",
+    autoFocus: true,
+    id: "name_prompt",
+    label: "The name of the job.",
+    required: true
+  }), /*#__PURE__*/_react.default.createElement(_reactMaterialize.TextInput, {
+    autoComplete: "off",
+    id: "description_prompt",
+    label: "A detailed description of the job.",
+    required: true
+  }), /*#__PURE__*/_react.default.createElement(_reactMaterialize.TextInput, {
+    autoComplete: "off",
+    id: "payment_prompt",
+    defaultValue: '1',
+    min: "0",
+    step: "1",
+    type: "number",
+    label: "The payment for the job in \u24C3.",
+    required: true
+  }), /*#__PURE__*/_react.default.createElement(_reactMaterialize.TextInput, {
+    autoComplete: "off",
+    id: "duration_prompt",
+    defaultValue: '172800',
+    min: "1",
+    step: "1",
+    type: "number",
+    label: "The duration for the job offer in s.",
+    required: true
+  })), /*#__PURE__*/_react.default.createElement(_reactMaterialize.Button, {
+    type: "submit",
+    small: true,
+    tooltip: "Creates the job and deposits the chosen payment."
+  }, "Create")));
+}
+},{"react":"../node_modules/react/index.js","react-materialize":"../node_modules/react-materialize/lib/index.js"}],"components/JobsOverview.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -81658,6 +81718,10 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _reactRouterDom = require("react-router-dom");
 
+var _JobForm = _interopRequireDefault(require("./JobForm"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -81665,18 +81729,24 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 const JobsOverview = _ref => {
   let {
     daoData,
-    loaded
+    loaded,
+    currentUser,
+    onJobCreation
   } = _ref;
   const {
     dao
   } = (0, _reactRouterDom.useParams)();
-  const [jobs, setJobs] = (0, _react.useState)([]);
+  const [openJobs, setOpenJobs] = (0, _react.useState)([]);
+  const [runningJobs, setRunningJobs] = (0, _react.useState)([]);
+  const [canceledJobs, setCanceledJobs] = (0, _react.useState)([]);
   (0, _react.useEffect)(() => {
     if (!daoData.jobs) {
       return;
     }
 
-    setJobs(splitArrayIntoChunksOfLen(daoData.jobs, 3));
+    setOpenJobs(splitArrayIntoChunksOfLen(daoData.jobs.filter(j => j.state === 'Open'), 3));
+    setRunningJobs(splitArrayIntoChunksOfLen(daoData.jobs.filter(j => j.state === 'InProgress'), 3));
+    setCanceledJobs(splitArrayIntoChunksOfLen(daoData.jobs.filter(j => j.state === 'Canceled'), 3));
   }, [daoData]);
 
   const splitArrayIntoChunksOfLen = (arr, len) => {
@@ -81695,7 +81765,7 @@ const JobsOverview = _ref => {
     return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, dao, "'s Jobs Board")), /*#__PURE__*/_react.default.createElement("h1", null, "Loading..."));
   }
 
-  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, daoData.name, "'s Jobs Board")), daoData.jobs.length > 0 ? jobs.map(chunk => /*#__PURE__*/_react.default.createElement("div", {
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, daoData.name, "'s Jobs Board")), /*#__PURE__*/_react.default.createElement("h5", null, "Open Jobs"), daoData.jobs.length > 0 ? openJobs.map(chunk => /*#__PURE__*/_react.default.createElement("div", {
     className: "row"
   }, chunk.map(job => /*#__PURE__*/_react.default.createElement("div", {
     className: "col s4"
@@ -81708,12 +81778,40 @@ const JobsOverview = _ref => {
     className: "card-title"
   }, job.name), /*#__PURE__*/_react.default.createElement("div", {
     className: "card-content"
-  }, /*#__PURE__*/_react.default.createElement("p", null, job.description)))))))) : /*#__PURE__*/_react.default.createElement("p", null, "Currently there are no jobs available. Come back later."));
+  }, /*#__PURE__*/_react.default.createElement("p", null, job.description)))))))) : /*#__PURE__*/_react.default.createElement("p", null, "Currently there are no open jobs available."), /*#__PURE__*/_react.default.createElement("h5", null, "Active Jobs"), daoData.jobs.length > 0 ? runningJobs.map(chunk => /*#__PURE__*/_react.default.createElement("div", {
+    className: "row"
+  }, chunk.map(job => /*#__PURE__*/_react.default.createElement("div", {
+    className: "col s4"
+  }, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    className: "bm-item menu-item",
+    to: job.id
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "card-title"
+  }, job.name), /*#__PURE__*/_react.default.createElement("div", {
+    className: "card-content"
+  }, /*#__PURE__*/_react.default.createElement("p", null, job.description)))))))) : /*#__PURE__*/_react.default.createElement("p", null, "Currently there are no active jobs."), /*#__PURE__*/_react.default.createElement("h5", null, "Canceled Jobs"), daoData.jobs.length > 0 ? canceledJobs.map(chunk => /*#__PURE__*/_react.default.createElement("div", {
+    className: "row"
+  }, chunk.map(job => /*#__PURE__*/_react.default.createElement("div", {
+    className: "col s4"
+  }, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    className: "bm-item menu-item",
+    to: job.id
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "card-title"
+  }, job.name), /*#__PURE__*/_react.default.createElement("div", {
+    className: "card-content"
+  }, /*#__PURE__*/_react.default.createElement("p", null, job.description)))))))) : /*#__PURE__*/_react.default.createElement("p", null, "Currently there are no canceled jobs."), dao === currentUser.accountId ? /*#__PURE__*/_react.default.createElement(_JobForm.default, {
+    onJobCreation: onJobCreation
+  }) : null);
 };
 
 var _default = JobsOverview;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js"}],"../node_modules/react-iframe/dist/es/iframe.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","./JobForm":"components/JobForm.jsx"}],"../node_modules/react-iframe/dist/es/iframe.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -82793,6 +82891,8 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _reactMaterialize = require("react-materialize");
 
+var _reactRouterDom = require("react-router-dom");
+
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -82804,9 +82904,14 @@ const JobDetailAdminCommands = _ref => {
     onStartJob
   } = _ref;
   const [contracted, setContracted] = (0, _react.useState)();
+  const navigate = (0, _reactRouterDom.useNavigate)();
 
   const changeContracted = e => {
     setContracted(e.target.value);
+  };
+
+  const goToApplications = () => {
+    navigate("applications");
   };
 
   if (!jobData) {
@@ -82815,13 +82920,13 @@ const JobDetailAdminCommands = _ref => {
 
   switch (jobData.state) {
     case 'InProgress':
-      return /*#__PURE__*/_react.default.createElement(_reactMaterialize.Button, {
+      return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_reactMaterialize.Button, {
         large: true,
         tooltip: "Canceles the payment an the job offering. Important: A new job has to be created afterwards.",
         onClick: () => onCancelJob(jobData.id)
-      }, "Cancel Contract");
+      }, "Cancel Contract"));
 
-    default:
+    case 'Open':
       return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("div", {
         className: "flex flex-col flex-grow medium-margin-right"
       }, /*#__PURE__*/_react.default.createElement(_reactMaterialize.TextInput, {
@@ -82832,13 +82937,63 @@ const JobDetailAdminCommands = _ref => {
         large: true,
         tooltip: "Assigns the contracted and starts the job immediately.",
         onClick: () => onStartJob(jobData.id, contracted),
-        className: contracted ? '' : 'disabled'
-      }, "Assign Contracted And Start"));
+        className: contracted ? 'medium-margin-right' : 'medium-margin-right disabled'
+      }, "Assign Contracted And Start"), /*#__PURE__*/_react.default.createElement(_reactMaterialize.Button, {
+        large: true,
+        onClick: goToApplications
+      }, "View Applications"));
+
+    default:
+      return null;
   }
 };
 
 var _default = JobDetailAdminCommands;
 exports.default = _default;
+},{"react":"../node_modules/react/index.js","react-materialize":"../node_modules/react-materialize/lib/index.js","react-router-dom":"../node_modules/react-router-dom/index.js"}],"components/ApplicationForm.jsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = ApplicationForm;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactMaterialize = require("react-materialize");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function ApplicationForm(_ref) {
+  let {
+    onApplyForJob,
+    jobId
+  } = _ref;
+  return /*#__PURE__*/_react.default.createElement("form", {
+    onSubmit: onApplyForJob
+  }, /*#__PURE__*/_react.default.createElement("fieldset", {
+    id: "fieldset",
+    className: "flex flex-col details-view flex-grow"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "highlight flex flex-col"
+  }, /*#__PURE__*/_react.default.createElement("h5", null, "Apply for the job"), /*#__PURE__*/_react.default.createElement("p", null, "Write your most inspiring application down below."), /*#__PURE__*/_react.default.createElement(_reactMaterialize.TextInput, {
+    autoComplete: "off",
+    id: "job_id",
+    label: "The job ID. Do not change it!",
+    required: true,
+    inputClassName: "disabled",
+    value: jobId
+  }), /*#__PURE__*/_react.default.createElement(_reactMaterialize.Textarea, {
+    autoFocus: true,
+    id: "application_prompt",
+    label: "Here is the space for your amazing application.",
+    required: true
+  })), /*#__PURE__*/_react.default.createElement(_reactMaterialize.Button, {
+    type: "submit",
+    small: true,
+    tooltip: "Applies for the job. In order to change your application simply fill the form again."
+  }, "Apply")));
+}
 },{"react":"../node_modules/react/index.js","react-materialize":"../node_modules/react-materialize/lib/index.js"}],"components/JobDetail.jsx":[function(require,module,exports) {
 "use strict";
 
@@ -82857,6 +83012,8 @@ var _big = _interopRequireDefault(require("big.js"));
 
 var _JobDetailAdminCommands = _interopRequireDefault(require("./JobDetailAdminCommands"));
 
+var _ApplicationForm = _interopRequireDefault(require("./ApplicationForm"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -82868,20 +83025,21 @@ const JobDetail = _ref => {
     daoData,
     currentUser,
     onCancelJob,
-    onStartJob
+    onStartJob,
+    onApplyForJob
   } = _ref;
   const {
     dao,
     job
   } = (0, _reactRouterDom.useParams)();
   const [jobData, setJobData] = (0, _react.useState)();
+  const [jobPayment, setJobPayment] = (0, _react.useState)();
   (0, _react.useEffect)(() => {
     if (!daoData.jobs) {
       return;
     }
 
     let data = daoData.jobs.find(j => j.id === job);
-    data.payment = (0, _big.default)(data.payment).div(10 ** 24).toFixed(2);
     let duration = parseInt(data.payment_cycle_in_s);
     let seconds = duration % 60;
     let minutes = Math.floor(duration % (60 * 60) / 60);
@@ -82907,6 +83065,7 @@ const JobDetail = _ref => {
 
     data.duration = duration;
     setJobData(data);
+    setJobPayment((0, _big.default)(data.payment).div(10 ** 24).toFixed(2));
   }, [daoData, job]);
 
   if (!jobData) {
@@ -82933,7 +83092,7 @@ const JobDetail = _ref => {
     className: "flex justify-between margin-row-small"
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "text-unimportant min-margin-right"
-  }, "Total Payment:"), /*#__PURE__*/_react.default.createElement("div", null, jobData.payment, " \u24C3")), /*#__PURE__*/_react.default.createElement("div", {
+  }, "Total Payment:"), /*#__PURE__*/_react.default.createElement("div", null, jobPayment, " \u24C3")), /*#__PURE__*/_react.default.createElement("div", {
     className: "flex justify-between margin-row-small"
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "text-unimportant min-margin-right"
@@ -82950,12 +83109,17 @@ const JobDetail = _ref => {
     position: "relative",
     overflow: "hidden",
     className: "roketo-iframe"
-  })) : null));
+  })) : null), dao !== currentUser.accountId ? /*#__PURE__*/_react.default.createElement("div", {
+    className: "margin-row-big"
+  }, /*#__PURE__*/_react.default.createElement(_ApplicationForm.default, {
+    onApplyForJob: onApplyForJob,
+    jobId: jobData.id
+  })) : null);
 };
 
 var _default = JobDetail;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","react-iframe":"../node_modules/react-iframe/dist/es/iframe.js","big.js":"../node_modules/big.js/big.js","./JobDetailAdminCommands":"components/JobDetailAdminCommands.jsx"}],"components/MembersOverview.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","react-iframe":"../node_modules/react-iframe/dist/es/iframe.js","big.js":"../node_modules/big.js/big.js","./JobDetailAdminCommands":"components/JobDetailAdminCommands.jsx","./ApplicationForm":"components/ApplicationForm.jsx"}],"components/MembersOverview.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -83049,7 +83213,148 @@ const TaskDetail = () => {
 
 var _default = TaskDetail;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js"}],"images/404.jpg":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js"}],"../node_modules/@mui/icons-material/ContentCopyOutlined.js":[function(require,module,exports) {
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _createSvgIcon = _interopRequireDefault(require("./utils/createSvgIcon"));
+
+var _jsxRuntime = require("react/jsx-runtime");
+
+var _default = (0, _createSvgIcon.default)( /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
+  d: "M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
+}), 'ContentCopyOutlined');
+
+exports.default = _default;
+},{"@babel/runtime/helpers/interopRequireDefault":"../node_modules/@babel/runtime/helpers/interopRequireDefault.js","./utils/createSvgIcon":"../node_modules/@mui/icons-material/utils/createSvgIcon.js","react/jsx-runtime":"../node_modules/react/jsx-runtime.js"}],"../node_modules/@mui/icons-material/ArrowBackOutlined.js":[function(require,module,exports) {
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _createSvgIcon = _interopRequireDefault(require("./utils/createSvgIcon"));
+
+var _jsxRuntime = require("react/jsx-runtime");
+
+var _default = (0, _createSvgIcon.default)( /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
+  d: "M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
+}), 'ArrowBackOutlined');
+
+exports.default = _default;
+},{"@babel/runtime/helpers/interopRequireDefault":"../node_modules/@babel/runtime/helpers/interopRequireDefault.js","./utils/createSvgIcon":"../node_modules/@mui/icons-material/utils/createSvgIcon.js","react/jsx-runtime":"../node_modules/react/jsx-runtime.js"}],"components/ApplicationOverview.jsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _reactRouterDom = require("react-router-dom");
+
+var _ContentCopyOutlined = _interopRequireDefault(require("@mui/icons-material/ContentCopyOutlined"));
+
+var _ArrowBackOutlined = _interopRequireDefault(require("@mui/icons-material/ArrowBackOutlined"));
+
+var _reactMaterialize = require("react-materialize");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+const ApplicationOverview = _ref => {
+  let {
+    daoData
+  } = _ref;
+  const {
+    job
+  } = (0, _reactRouterDom.useParams)();
+  const [applications, setApplications] = (0, _react.useState)();
+  const [jobName, setJobName] = (0, _react.useState)();
+  const navigate = (0, _reactRouterDom.useNavigate)();
+  (0, _react.useEffect)(() => {
+    if (!daoData.jobs) {
+      return;
+    }
+
+    let data = daoData.jobs.find(j => j.id === job);
+    setApplications(splitArrayIntoChunksOfLen(data.applicants, 2));
+    setJobName(data.name);
+  }, [daoData, job]);
+
+  const splitArrayIntoChunksOfLen = (arr, len) => {
+    var chunks = [],
+        i = 0,
+        n = arr.length;
+
+    while (i < n) {
+      chunks.push(arr.slice(i, i += len));
+    }
+
+    return chunks;
+  };
+
+  const goBack = () => {
+    navigate(-1);
+  };
+
+  const copyApplicant = async applicant => {
+    await navigator.clipboard.writeText(applicant);
+  };
+
+  if (!applications) {
+    return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, job, "'s Applications")), /*#__PURE__*/_react.default.createElement("h1", null, "Loading..."));
+  }
+
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, jobName, "'s Applications")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "flex flex-row-wrap justify-between margin-row-small"
+  }, /*#__PURE__*/_react.default.createElement(_reactMaterialize.Button, {
+    large: true,
+    onClick: goBack
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "flex flex-row"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "min-margin-right"
+  }, /*#__PURE__*/_react.default.createElement(_ArrowBackOutlined.default, {
+    className: "btn-icon"
+  })), /*#__PURE__*/_react.default.createElement("div", null, "Back")))), applications.length > 0 ? applications.map(chunk => /*#__PURE__*/_react.default.createElement("div", {
+    className: "row"
+  }, chunk.map(application => /*#__PURE__*/_react.default.createElement("div", {
+    className: "col s6"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "card-title flex flex-row"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "min-margin-right"
+  }, application.applicant), /*#__PURE__*/_react.default.createElement("div", {
+    className: "bm-item menu-item",
+    onClick: () => copyApplicant(application.applicant)
+  }, /*#__PURE__*/_react.default.createElement(_ContentCopyOutlined.default, {
+    className: "btn-icon"
+  }))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "card-content"
+  }, /*#__PURE__*/_react.default.createElement("p", {
+    className: "preserve-newline"
+  }, application.application))))))) : /*#__PURE__*/_react.default.createElement("p", null, "Currently there are no applications for the job. Come back later."));
+};
+
+var _default = ApplicationOverview;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","@mui/icons-material/ContentCopyOutlined":"../node_modules/@mui/icons-material/ContentCopyOutlined.js","@mui/icons-material/ArrowBackOutlined":"../node_modules/@mui/icons-material/ArrowBackOutlined.js","react-materialize":"../node_modules/react-materialize/lib/index.js"}],"images/404.jpg":[function(require,module,exports) {
 module.exports = "/404.d5d098f5.jpg";
 },{}],"components/404.jsx":[function(require,module,exports) {
 "use strict";
@@ -83163,7 +83468,7 @@ module.hot.accept(reloadCSS);
 module.exports = {
   "name": "dao-dashboard-react",
   "version": "0.1.0",
-  "homepage": "https://near-hackathon-luciferius.github.io/challenge-6-ukraine-nft",
+  "homepage": "https://near-hackathon-luciferius.github.io/challenge-8-rocketo-dao-dashboard",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.9.0",
@@ -95619,6 +95924,8 @@ var _TasksOverview = _interopRequireDefault(require("./components/TasksOverview"
 
 var _TaskDetail = _interopRequireDefault(require("./components/TaskDetail"));
 
+var _ApplicationOverview = _interopRequireDefault(require("./components/ApplicationOverview"));
+
 var _2 = _interopRequireDefault(require("./components/404.jsx"));
 
 require("materialize-css/dist/css/materialize.css");
@@ -95713,10 +96020,48 @@ const App = _ref => {
     });
   };
 
+  const onJobCreation = e => {
+    e.preventDefault();
+    const {
+      fieldset,
+      name_prompt,
+      description_prompt,
+      payment_prompt,
+      duration_prompt
+    } = e.target.elements;
+    const payment = (0, _big.default)(payment_prompt.value).times(10 ** 24).toFixed();
+    fieldset.disabled = true;
+    contract.create_job_offering({
+      name: name_prompt.value,
+      description: description_prompt.value,
+      payment: payment,
+      payment_cycle_in_s: duration_prompt.value
+    }, BOATLOAD_OF_GAS, payment).then(_ => {
+      console.log("Successfully created job.");
+    });
+  };
+
+  const onApplyForJob = e => {
+    e.preventDefault();
+    const {
+      fieldset,
+      job_id,
+      application_prompt
+    } = e.target.elements;
+    fieldset.disabled = true;
+    contract.apply_for_job({
+      dao_owner: dao,
+      job_id: job_id.value,
+      application: application_prompt.value
+    }, BOATLOAD_OF_GAS, 0).then(_ => {
+      console.log("Successfully added application.");
+    });
+  };
+
   const signIn = () => {
     wallet.requestSignIn({
       contractId: nearConfig.contractName,
-      methodNames: [contract.buy_animal.name, contract.payout.name]
+      methodNames: [contract.cancel_job.name, contract.start_job.name, contract.create_job_offering.name, contract.apply_for_job.name]
     }, //contract requesting access
     'NEAR Challenge #8 - DAO Dashboard', //optional name
     null, //optional URL to redirect to if the sign in was successful
@@ -95726,7 +96071,6 @@ const App = _ref => {
 
   const signOut = () => {
     wallet.signOut();
-    window.location.replace(window.location.origin + window.location.pathname);
   };
 
   const clearMessage = () => {
@@ -95769,7 +96113,9 @@ const App = _ref => {
     index: true,
     element: /*#__PURE__*/_react.default.createElement(_JobsOverview.default, {
       daoData: daoData,
-      loaded: loaded
+      loaded: loaded,
+      onJobCreation: onJobCreation,
+      currentUser: currentUser
     })
   }), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     path: ":job",
@@ -95777,9 +96123,16 @@ const App = _ref => {
       daoData: daoData,
       currentUser: currentUser,
       onCancelJob: onCancelJob,
-      onStartJob: onStartJob
+      onStartJob: onStartJob,
+      onApplyForJob: onApplyForJob
     })
-  })), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
+  }), currentUser.accountId == dao ? /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
+    path: ":job/applications",
+    element: /*#__PURE__*/_react.default.createElement(_ApplicationOverview.default, {
+      daoData: daoData,
+      loaded: loaded
+    })
+  }) : null), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     path: "tasks"
   }, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     index: true,
@@ -95806,7 +96159,7 @@ const App = _ref => {
 
 var _default = App;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","./components/SignIn":"components/SignIn.jsx","./layout":"layout.js","./dao-layout":"dao-layout.js","./components/CreateDao":"components/CreateDao.jsx","./components/DaoDashboard":"components/DaoDashboard.jsx","./components/JobsOverview":"components/JobsOverview.jsx","./components/JobDetail":"components/JobDetail.jsx","./components/MembersOverview":"components/MembersOverview.jsx","./components/MemberDetail":"components/MemberDetail.jsx","./components/TasksOverview":"components/TasksOverview.jsx","./components/TaskDetail":"components/TaskDetail.jsx","./components/404.jsx":"components/404.jsx","materialize-css/dist/css/materialize.css":"../node_modules/materialize-css/dist/css/materialize.css","./App.css":"App.css","big.js":"../node_modules/big.js/big.js","react-router-dom":"../node_modules/react-router-dom/index.js","../package.json":"../package.json","materialize-css":"../node_modules/materialize-css/dist/js/materialize.js"}],"config.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./components/SignIn":"components/SignIn.jsx","./layout":"layout.js","./dao-layout":"dao-layout.js","./components/CreateDao":"components/CreateDao.jsx","./components/DaoDashboard":"components/DaoDashboard.jsx","./components/JobsOverview":"components/JobsOverview.jsx","./components/JobDetail":"components/JobDetail.jsx","./components/MembersOverview":"components/MembersOverview.jsx","./components/MemberDetail":"components/MemberDetail.jsx","./components/TasksOverview":"components/TasksOverview.jsx","./components/TaskDetail":"components/TaskDetail.jsx","./components/ApplicationOverview":"components/ApplicationOverview.jsx","./components/404.jsx":"components/404.jsx","materialize-css/dist/css/materialize.css":"../node_modules/materialize-css/dist/css/materialize.css","./App.css":"App.css","big.js":"../node_modules/big.js/big.js","react-router-dom":"../node_modules/react-router-dom/index.js","../package.json":"../package.json","materialize-css":"../node_modules/materialize-css/dist/js/materialize.js"}],"config.js":[function(require,module,exports) {
 const CONTRACT_NAME = undefined || 'dao-dashboard.cryptosketches.testnet';
 
 function getConfig(env) {
@@ -112184,7 +112537,7 @@ async function initContract() {
     // View methods are read-only – they don't modify the state, but usually return some value
     viewMethods: ['get_dao'],
     // Change methods can modify the state, but you don't receive the returned value when called
-    changeMethods: ['cancel_job', 'start_job'],
+    changeMethods: ['cancel_job', 'start_job', 'create_job_offering', 'apply_for_job'],
     // Sender is the account ID to initialize transactions.
     // getAccountId() will return empty string if user is still unauthorized
     sender: walletConnection.getAccountId()
@@ -112258,7 +112611,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57191" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53140" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

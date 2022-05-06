@@ -249,10 +249,6 @@ p.small {
   margin: 0;
 }
 
-form {
-  background-color: #bdc3c788;
-}
-
 fieldset {
   margin:0;
 }
@@ -284,6 +280,11 @@ fieldset {
 .margin-row-small {
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
+}
+
+.margin-row-big {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .details-view {
@@ -319,4 +320,16 @@ button:hover {
 
 input {
   color: #fff;
+}
+
+input.disabled {
+  pointer-events: none;
+}
+
+textarea {
+  color: #fff;
+}
+
+.preserve-newline {
+  white-space: pre-line;
 }

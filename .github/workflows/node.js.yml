@@ -22,7 +22,7 @@ jobs:
         node-version: 16.x
         cache: 'npm'
     - run: |
-        git remote set-url origin https://Bearer:${{ secrets.GITHUB_TOKEN }}@github.com/near-hackathon-luciferius/challenge-8-ukraine-nft
+        git remote set-url origin https://Bearer:${{ secrets.GITHUB_TOKEN }}@github.com/near-hackathon-luciferius/challenge-8-rocketo-dao-dashboard
         npm --no-git-tag-version version 1.0.${{ github.run_number }}
         npm ci
         npm run deploy --if-present
