@@ -20,7 +20,7 @@ require('materialize-css');
 
 const BOATLOAD_OF_GAS = Big(3).times(10 ** 14).toFixed();
 
-const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransaction, error }) => {
+const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransaction, error, roketoContract }) => {
   const [message, setMessage] = useState('');
   const [dao, setDao] = useState('');
   const [daoData, setDaoData] = useState([]);
@@ -41,8 +41,12 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
         //dao creation
         let message = result.receipts_outcome[0].outcome.logs.pop();
         if(!message){
-          //cancel job
+          //start job
           message = result.receipts_outcome[3].outcome.logs.pop();
+        }
+        if(!message){
+          //receive payment
+          message = result.receipts_outcome[11].outcome.logs.pop();
         }
         if(message){
           setMessage(message);
@@ -155,6 +159,31 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
       setMessage('Successfully applied for the job.');
     })
   }
+
+  const onEnablePayment = () => {
+    roketoContract.account_update_cron_flag(
+      {
+        is_cron_allowed: true
+      },
+      BOATLOAD_OF_GAS,
+      1
+    ).then((_) => {
+      console.log("Successfully enabled payment.");
+    })
+  }
+
+  const onReceivePayment = (jobId) => {
+      contract.receive_job_payment(
+        {
+          dao_owner: dao,
+          job_id: jobId
+        },
+        BOATLOAD_OF_GAS,
+        Big('1').times(10 ** 21).toFixed()
+      ).then((_) => {
+        console.log("Successfully received payment.");
+      })
+  }
   
   const signIn = () => {
     wallet.requestSignIn(
@@ -189,7 +218,10 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
           <Route index element={<DaoDashboard daoData={daoData} loaded={loaded}/>}/>
           <Route path="jobs">
             <Route index element={<JobsOverview daoData={daoData} loaded={loaded} onJobCreation={onJobCreation} currentUser={currentUser}/>}/>
-            <Route path=":job" element={<JobDetail daoData={daoData} currentUser={currentUser} onCancelJob={onCancelJob} onStartJob={onStartJob} onApplyForJob={onApplyForJob}/>}/>
+            <Route path=":job" element={<JobDetail daoData={daoData} currentUser={currentUser} 
+                                                   onCancelJob={onCancelJob} onStartJob={onStartJob} 
+                                                   onApplyForJob={onApplyForJob} roketoContract={roketoContract}
+                                                   onEnablePayment={onEnablePayment} onReceivePayment={onReceivePayment}/>}/>
             {currentUser.accountId === dao
               ? <Route path=":job/applications" element={<ApplicationOverview daoData={daoData}/>}/>
               : null

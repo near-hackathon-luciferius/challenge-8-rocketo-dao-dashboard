@@ -42973,7 +42973,7 @@ function SignIn(_ref) {
   } = _ref;
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("main", {
     id: "page-wrapper"
-  }, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, "Kawaii Zoo Homepage")), /*#__PURE__*/_react.default.createElement(_reactMaterialize.Button, {
+  }, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, "DAO Dashboard Homepage")), /*#__PURE__*/_react.default.createElement(_reactMaterialize.Button, {
     large: true,
     onClick: signIn,
     className: "login"
@@ -82112,131 +82112,7 @@ const JobsOverview = _ref => {
 
 var _default = JobsOverview;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","./JobForm":"components/JobForm.jsx"}],"../node_modules/react-iframe/dist/es/iframe.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _objectAssign = _interopRequireDefault(require("object-assign"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var __assign = void 0 && (void 0).__assign || function () {
-  __assign = Object.assign || function (t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-      s = arguments[i];
-
-      for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-    }
-
-    return t;
-  };
-
-  return __assign.apply(this, arguments);
-};
-
-var Iframe = function (_a) {
-  var url = _a.url,
-      allowFullScreen = _a.allowFullScreen,
-      position = _a.position,
-      display = _a.display,
-      height = _a.height,
-      width = _a.width,
-      overflow = _a.overflow,
-      styles = _a.styles,
-      onLoad = _a.onLoad,
-      onMouseOver = _a.onMouseOver,
-      onMouseOut = _a.onMouseOut,
-      scrolling = _a.scrolling,
-      id = _a.id,
-      frameBorder = _a.frameBorder,
-      ariaHidden = _a.ariaHidden,
-      sandbox = _a.sandbox,
-      allow = _a.allow,
-      className = _a.className,
-      title = _a.title,
-      ariaLabel = _a.ariaLabel,
-      ariaLabelledby = _a.ariaLabelledby,
-      name = _a.name,
-      target = _a.target,
-      loading = _a.loading,
-      importance = _a.importance,
-      referrerpolicy = _a.referrerpolicy,
-      allowpaymentrequest = _a.allowpaymentrequest,
-      src = _a.src;
-  var defaultProps = (0, _objectAssign.default)({
-    src: src || url,
-    target: target || null,
-    style: {
-      position: position || null,
-      display: display || "block",
-      overflow: overflow || null
-    },
-    scrolling: scrolling || null,
-    allowpaymentrequest: allowpaymentrequest || null,
-    importance: importance || null,
-    sandbox: sandbox || null,
-    loading: loading || null,
-    styles: styles || null,
-    name: name || null,
-    className: className || null,
-    referrerpolicy: referrerpolicy || null,
-    title: title || null,
-    allow: allow || null,
-    id: id || null,
-    "aria-labelledby": ariaLabelledby || null,
-    "aria-hidden": ariaHidden || null,
-    "aria-label": ariaLabel || null,
-    width: width || null,
-    height: height || null,
-    onLoad: onLoad || null,
-    onMouseOver: onMouseOver || null,
-    onMouseOut: onMouseOut || null
-  });
-  var props = Object.create(null);
-
-  for (var _i = 0, _b = Object.keys(defaultProps); _i < _b.length; _i++) {
-    var prop = _b[_i];
-
-    if (defaultProps[prop] != null) {
-      props[prop] = defaultProps[prop];
-    }
-  }
-
-  for (var _c = 0, _d = Object.keys(props.style); _c < _d.length; _c++) {
-    var i = _d[_c];
-
-    if (props.style[i] == null) {
-      delete props.style[i];
-    }
-  }
-
-  if (allowFullScreen) {
-    if ("allow" in props) {
-      var currentAllow = props.allow.replace("fullscreen", "");
-      props.allow = ("fullscreen " + currentAllow.trim()).trim();
-    } else {
-      props.allow = "fullscreen";
-    }
-  }
-
-  if (frameBorder >= 0) {
-    if (!props.style.hasOwnProperty("border")) {
-      props.style.border = frameBorder;
-    }
-  }
-
-  return _react.default.createElement("iframe", __assign({}, props));
-};
-
-var _default = Iframe;
-exports.default = _default;
-},{"react":"../node_modules/react/index.js","object-assign":"../node_modules/object-assign/index.js"}],"../node_modules/big.js/big.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","./JobForm":"components/JobForm.jsx"}],"../node_modules/big.js/big.js":[function(require,module,exports) {
 var define;
 /*
  *  big.js v5.2.2
@@ -83251,7 +83127,66 @@ const JobDetailAdminCommands = _ref => {
 
 var _default = JobDetailAdminCommands;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-materialize":"../node_modules/react-materialize/lib/index.js","react-router-dom":"../node_modules/react-router-dom/index.js"}],"components/ApplicationForm.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-materialize":"../node_modules/react-materialize/lib/index.js","react-router-dom":"../node_modules/react-router-dom/index.js"}],"components/JobDetailUserCommands.jsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _reactMaterialize = require("react-materialize");
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+const JobDetailUserCommands = _ref => {
+  let {
+    currentUser,
+    roketoContract,
+    onEnablePayment,
+    stream,
+    onReceivePayment,
+    jobId
+  } = _ref;
+  const [account, setAccount] = (0, _react.useState)();
+  (0, _react.useEffect)(() => {
+    async function fetchData() {
+      const result = await roketoContract.get_account({
+        account_id: currentUser.accountId
+      });
+      console.log(result);
+      setAccount(result);
+    }
+
+    fetchData();
+  }, [currentUser]);
+
+  if (!account) {
+    return null;
+  }
+
+  if (account.is_cron_allowed) {
+    return stream && stream.status === 'Active' ? /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_reactMaterialize.Button, {
+      large: true,
+      tooltip: "Receives the available payment.",
+      onClick: () => onReceivePayment(jobId)
+    }, "Receive Payment")) : null;
+  }
+
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_reactMaterialize.Button, {
+    large: true,
+    tooltip: "Enables the payment for the job and all other jobs in the future.",
+    onClick: onEnablePayment
+  }, "Enable Payment"));
+};
+
+var _default = JobDetailUserCommands;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","react-materialize":"../node_modules/react-materialize/lib/index.js"}],"components/ApplicationForm.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -83307,11 +83242,11 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _reactRouterDom = require("react-router-dom");
 
-var _reactIframe = _interopRequireDefault(require("react-iframe"));
-
 var _big = _interopRequireDefault(require("big.js"));
 
 var _JobDetailAdminCommands = _interopRequireDefault(require("./JobDetailAdminCommands"));
+
+var _JobDetailUserCommands = _interopRequireDefault(require("./JobDetailUserCommands"));
 
 var _ApplicationForm = _interopRequireDefault(require("./ApplicationForm"));
 
@@ -83327,7 +83262,10 @@ const JobDetail = _ref => {
     currentUser,
     onCancelJob,
     onStartJob,
-    onApplyForJob
+    onApplyForJob,
+    roketoContract,
+    onEnablePayment,
+    onReceivePayment
   } = _ref;
   const {
     dao,
@@ -83335,6 +83273,7 @@ const JobDetail = _ref => {
   } = (0, _reactRouterDom.useParams)();
   const [jobData, setJobData] = (0, _react.useState)();
   const [jobPayment, setJobPayment] = (0, _react.useState)();
+  const [stream, setStream] = (0, _react.useState)();
   (0, _react.useEffect)(() => {
     if (!daoData.jobs) {
       return;
@@ -83368,6 +83307,21 @@ const JobDetail = _ref => {
     setJobData(data);
     setJobPayment((0, _big.default)(data.payment).div(10 ** 24).toFixed(2));
   }, [daoData, job]);
+  (0, _react.useEffect)(() => {
+    async function fetchData() {
+      if (!jobData || !jobData.payment_stream_id) {
+        return;
+      }
+
+      const result = await roketoContract.get_stream({
+        stream_id: jobData.payment_stream_id
+      });
+      console.log(result);
+      setStream(result);
+    }
+
+    fetchData();
+  }, [jobData]);
 
   if (!jobData) {
     return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, job, "'s Details")), /*#__PURE__*/_react.default.createElement("h1", null, "Loading..."));
@@ -83379,6 +83333,13 @@ const JobDetail = _ref => {
     jobData: jobData,
     onCancelJob: onCancelJob,
     onStartJob: onStartJob
+  }) : jobData && jobData.contracted === currentUser.accountId ? /*#__PURE__*/_react.default.createElement(_JobDetailUserCommands.default, {
+    currentUser: currentUser,
+    roketoContract: roketoContract,
+    onEnablePayment: onEnablePayment,
+    stream: stream,
+    onReceivePayment: onReceivePayment,
+    jobId: jobData.id
   }) : null), /*#__PURE__*/_react.default.createElement("div", {
     className: "flex flex-row-wrap justify-between"
   }, /*#__PURE__*/_react.default.createElement("div", {
@@ -83405,12 +83366,9 @@ const JobDetail = _ref => {
     className: "flex justify-between margin-row-small"
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "text-unimportant min-margin-right"
-  }, "Contracted:"), /*#__PURE__*/_react.default.createElement("div", null, jobData.contracted))), jobData.payment_stream_id ? /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(_reactIframe.default, {
-    url: "https://test.app.roke.to/#/streams/" + jobData.payment_stream_id,
-    position: "relative",
-    overflow: "hidden",
-    className: "roketo-iframe"
-  })) : null), dao !== currentUser.accountId && jobData.state === 'Open' ? /*#__PURE__*/_react.default.createElement("div", {
+  }, "Contracted:"), /*#__PURE__*/_react.default.createElement("div", null, jobData.contracted))), stream ? /*#__PURE__*/_react.default.createElement("div", {
+    className: "details-view flex flex-col"
+  }, "Some progress for the stream") : null), dao !== currentUser.accountId && jobData.state === 'Open' ? /*#__PURE__*/_react.default.createElement("div", {
     className: "margin-row-big"
   }, /*#__PURE__*/_react.default.createElement(_ApplicationForm.default, {
     onApplyForJob: onApplyForJob,
@@ -83420,7 +83378,7 @@ const JobDetail = _ref => {
 
 var _default = JobDetail;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","react-iframe":"../node_modules/react-iframe/dist/es/iframe.js","big.js":"../node_modules/big.js/big.js","./JobDetailAdminCommands":"components/JobDetailAdminCommands.jsx","./ApplicationForm":"components/ApplicationForm.jsx"}],"components/MembersOverview.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","big.js":"../node_modules/big.js/big.js","./JobDetailAdminCommands":"components/JobDetailAdminCommands.jsx","./JobDetailUserCommands":"components/JobDetailUserCommands.jsx","./ApplicationForm":"components/ApplicationForm.jsx"}],"components/MembersOverview.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -83508,7 +83466,131 @@ const MembersOverview = _ref => {
 
 var _default = MembersOverview;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js"}],"components/TasksOverview.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js"}],"../node_modules/react-iframe/dist/es/iframe.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _objectAssign = _interopRequireDefault(require("object-assign"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var __assign = void 0 && (void 0).__assign || function () {
+  __assign = Object.assign || function (t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+
+      for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+    }
+
+    return t;
+  };
+
+  return __assign.apply(this, arguments);
+};
+
+var Iframe = function (_a) {
+  var url = _a.url,
+      allowFullScreen = _a.allowFullScreen,
+      position = _a.position,
+      display = _a.display,
+      height = _a.height,
+      width = _a.width,
+      overflow = _a.overflow,
+      styles = _a.styles,
+      onLoad = _a.onLoad,
+      onMouseOver = _a.onMouseOver,
+      onMouseOut = _a.onMouseOut,
+      scrolling = _a.scrolling,
+      id = _a.id,
+      frameBorder = _a.frameBorder,
+      ariaHidden = _a.ariaHidden,
+      sandbox = _a.sandbox,
+      allow = _a.allow,
+      className = _a.className,
+      title = _a.title,
+      ariaLabel = _a.ariaLabel,
+      ariaLabelledby = _a.ariaLabelledby,
+      name = _a.name,
+      target = _a.target,
+      loading = _a.loading,
+      importance = _a.importance,
+      referrerpolicy = _a.referrerpolicy,
+      allowpaymentrequest = _a.allowpaymentrequest,
+      src = _a.src;
+  var defaultProps = (0, _objectAssign.default)({
+    src: src || url,
+    target: target || null,
+    style: {
+      position: position || null,
+      display: display || "block",
+      overflow: overflow || null
+    },
+    scrolling: scrolling || null,
+    allowpaymentrequest: allowpaymentrequest || null,
+    importance: importance || null,
+    sandbox: sandbox || null,
+    loading: loading || null,
+    styles: styles || null,
+    name: name || null,
+    className: className || null,
+    referrerpolicy: referrerpolicy || null,
+    title: title || null,
+    allow: allow || null,
+    id: id || null,
+    "aria-labelledby": ariaLabelledby || null,
+    "aria-hidden": ariaHidden || null,
+    "aria-label": ariaLabel || null,
+    width: width || null,
+    height: height || null,
+    onLoad: onLoad || null,
+    onMouseOver: onMouseOver || null,
+    onMouseOut: onMouseOut || null
+  });
+  var props = Object.create(null);
+
+  for (var _i = 0, _b = Object.keys(defaultProps); _i < _b.length; _i++) {
+    var prop = _b[_i];
+
+    if (defaultProps[prop] != null) {
+      props[prop] = defaultProps[prop];
+    }
+  }
+
+  for (var _c = 0, _d = Object.keys(props.style); _c < _d.length; _c++) {
+    var i = _d[_c];
+
+    if (props.style[i] == null) {
+      delete props.style[i];
+    }
+  }
+
+  if (allowFullScreen) {
+    if ("allow" in props) {
+      var currentAllow = props.allow.replace("fullscreen", "");
+      props.allow = ("fullscreen " + currentAllow.trim()).trim();
+    } else {
+      props.allow = "fullscreen";
+    }
+  }
+
+  if (frameBorder >= 0) {
+    if (!props.style.hasOwnProperty("border")) {
+      props.style.border = frameBorder;
+    }
+  }
+
+  return _react.default.createElement("iframe", __assign({}, props));
+};
+
+var _default = Iframe;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","object-assign":"../node_modules/object-assign/index.js"}],"components/TasksOverview.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -96327,7 +96409,8 @@ const App = _ref => {
     wallet,
     provider,
     lastTransaction,
-    error
+    error,
+    roketoContract
   } = _ref;
   const [message, setMessage] = (0, _react.useState)('');
   const [dao, setDao] = (0, _react.useState)('');
@@ -96348,8 +96431,13 @@ const App = _ref => {
       let message = result.receipts_outcome[0].outcome.logs.pop();
 
       if (!message) {
-        //cancel job
+        //start job
         message = result.receipts_outcome[3].outcome.logs.pop();
+      }
+
+      if (!message) {
+        //receive payment
+        message = result.receipts_outcome[11].outcome.logs.pop();
       }
 
       if (message) {
@@ -96449,6 +96537,23 @@ const App = _ref => {
     });
   };
 
+  const onEnablePayment = () => {
+    roketoContract.account_update_cron_flag({
+      is_cron_allowed: true
+    }, BOATLOAD_OF_GAS, 1).then(_ => {
+      console.log("Successfully enabled payment.");
+    });
+  };
+
+  const onReceivePayment = jobId => {
+    contract.receive_job_payment({
+      dao_owner: dao,
+      job_id: jobId
+    }, BOATLOAD_OF_GAS, (0, _big.default)('1').times(10 ** 21).toFixed()).then(_ => {
+      console.log("Successfully received payment.");
+    });
+  };
+
   const signIn = () => {
     wallet.requestSignIn({
       contractId: nearConfig.contractName,
@@ -96521,7 +96626,10 @@ const App = _ref => {
       currentUser: currentUser,
       onCancelJob: onCancelJob,
       onStartJob: onStartJob,
-      onApplyForJob: onApplyForJob
+      onApplyForJob: onApplyForJob,
+      roketoContract: roketoContract,
+      onEnablePayment: onEnablePayment,
+      onReceivePayment: onReceivePayment
     })
   }), currentUser.accountId === dao ? /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     path: ":job/applications",
@@ -96561,6 +96669,7 @@ var _default = App;
 exports.default = _default;
 },{"react":"../node_modules/react/index.js","./components/SignIn":"components/SignIn.jsx","./layout":"layout.js","./dao-layout":"dao-layout.js","./components/CreateDao":"components/CreateDao.jsx","./components/DaoDashboard":"components/DaoDashboard.jsx","./components/JobsOverview":"components/JobsOverview.jsx","./components/JobDetail":"components/JobDetail.jsx","./components/MembersOverview":"components/MembersOverview.jsx","./components/TasksOverview":"components/TasksOverview.jsx","./components/ApplicationOverview":"components/ApplicationOverview.jsx","./components/Voting":"components/Voting.jsx","./components/404.jsx":"components/404.jsx","materialize-css/dist/css/materialize.css":"../node_modules/materialize-css/dist/css/materialize.css","./App.css":"App.css","big.js":"../node_modules/big.js/big.js","react-router-dom":"../node_modules/react-router-dom/index.js","../package.json":"../package.json","materialize-css":"../node_modules/materialize-css/dist/js/materialize.js"}],"config.js":[function(require,module,exports) {
 const CONTRACT_NAME = undefined || 'dao-dashboard.cryptosketches.testnet';
+const ROKETO_CONTRACT_NAME = undefined || 'streaming-r-v2.dcversus.testnet';
 
 function getConfig(env) {
   switch (env) {
@@ -96570,6 +96679,7 @@ function getConfig(env) {
         networkId: 'mainnet',
         nodeUrl: 'https://rpc.mainnet.near.org',
         contractName: CONTRACT_NAME,
+        roketoContractName: ROKETO_CONTRACT_NAME,
         walletUrl: 'https://wallet.near.org',
         helperUrl: 'https://helper.mainnet.near.org'
       };
@@ -96580,6 +96690,7 @@ function getConfig(env) {
         networkId: 'testnet',
         nodeUrl: 'https://rpc.testnet.near.org',
         contractName: CONTRACT_NAME,
+        roketoContractName: ROKETO_CONTRACT_NAME,
         walletUrl: 'https://wallet.testnet.near.org',
         helperUrl: 'https://helper.testnet.near.org'
       };
@@ -96589,6 +96700,7 @@ function getConfig(env) {
         networkId: 'betanet',
         nodeUrl: 'https://rpc.betanet.near.org',
         contractName: CONTRACT_NAME,
+        roketoContractName: ROKETO_CONTRACT_NAME,
         walletUrl: 'https://wallet.betanet.near.org',
         helperUrl: 'https://helper.betanet.near.org'
       };
@@ -96599,7 +96711,8 @@ function getConfig(env) {
         nodeUrl: 'http://localhost:3030',
         keyPath: `${"C:\\Users\\9QJ6PC"}/.near/validator_key.json`,
         walletUrl: 'http://localhost:4000/wallet',
-        contractName: CONTRACT_NAME
+        contractName: CONTRACT_NAME,
+        roketoContractName: ROKETO_CONTRACT_NAME
       };
 
     case 'test':
@@ -96608,6 +96721,7 @@ function getConfig(env) {
         networkId: 'shared-test',
         nodeUrl: 'https://rpc.ci-testnet.near.org',
         contractName: CONTRACT_NAME,
+        roketoContractName: ROKETO_CONTRACT_NAME,
         masterAccount: 'test.near'
       };
 
@@ -96616,6 +96730,7 @@ function getConfig(env) {
         networkId: 'shared-test-staging',
         nodeUrl: 'https://rpc.ci-betanet.near.org',
         contractName: CONTRACT_NAME,
+        roketoContractName: ROKETO_CONTRACT_NAME,
         masterAccount: 'test.near'
       };
 
@@ -112937,7 +113052,21 @@ async function initContract() {
     // View methods are read-only – they don't modify the state, but usually return some value
     viewMethods: ['get_dao', 'get_daos'],
     // Change methods can modify the state, but you don't receive the returned value when called
-    changeMethods: ['cancel_job', 'start_job', 'create_job_offering', 'apply_for_job', 'create_dao'],
+    changeMethods: ['cancel_job', 'start_job', 'create_job_offering', 'apply_for_job', 'create_dao', 'receive_job_payment'],
+    // Sender is the account ID to initialize transactions.
+    // getAccountId() will return empty string if user is still unauthorized
+    sender: walletConnection.getAccountId()
+  }); // Initializing our contract APIs by contract name and configuration
+
+  const roketoContract = await new nearAPI.Contract( // User's accountId as a string
+  walletConnection.account(), // accountId of the contract we will be loading
+  // NOTE: All contracts on NEAR are deployed to an account and
+  // accounts can only have one contract deployed to them.
+  nearConfig.roketoContractName, {
+    // View methods are read-only – they don't modify the state, but usually return some value
+    viewMethods: ['get_stream', 'get_account'],
+    // Change methods can modify the state, but you don't receive the returned value when called
+    changeMethods: ['account_update_cron_flag'],
     // Sender is the account ID to initialize transactions.
     // getAccountId() will return empty string if user is still unauthorized
     sender: walletConnection.getAccountId()
@@ -112948,7 +113077,8 @@ async function initContract() {
     currentUser,
     nearConfig,
     walletConnection,
-    provider
+    provider,
+    roketoContract
   };
 }
 
@@ -112958,7 +113088,8 @@ window.nearInitPromise = initContract().then(_ref => {
     currentUser,
     nearConfig,
     walletConnection,
-    provider
+    provider,
+    roketoContract
   } = _ref;
   let urlParams = new URLSearchParams(window.location.search);
   let lastTransaction;
@@ -112980,7 +113111,8 @@ window.nearInitPromise = initContract().then(_ref => {
     wallet: walletConnection,
     lastTransaction: lastTransaction,
     provider: provider,
-    error: errorMessage
+    error: errorMessage,
+    roketoContract: roketoContract
   })), document.getElementById('root'));
 });
 },{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","./App":"App.js","./config.js":"config.js","near-api-js":"../node_modules/near-api-js/lib/browser-index.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -113011,7 +113143,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56598" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53343" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

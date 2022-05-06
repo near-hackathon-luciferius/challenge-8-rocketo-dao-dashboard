@@ -45,7 +45,26 @@ async function initContract() {
       // View methods are read-only – they don't modify the state, but usually return some value
       viewMethods: ['get_dao', 'get_daos'],
       // Change methods can modify the state, but you don't receive the returned value when called
-      changeMethods: ['cancel_job', 'start_job', 'create_job_offering', 'apply_for_job', 'create_dao'],
+      changeMethods: ['cancel_job', 'start_job', 'create_job_offering', 'apply_for_job', 'create_dao', 'receive_job_payment'],
+      // Sender is the account ID to initialize transactions.
+      // getAccountId() will return empty string if user is still unauthorized
+      sender: walletConnection.getAccountId(),
+    }
+  );
+
+  // Initializing our contract APIs by contract name and configuration
+  const roketoContract = await new nearAPI.Contract(
+    // User's accountId as a string
+    walletConnection.account(),
+    // accountId of the contract we will be loading
+    // NOTE: All contracts on NEAR are deployed to an account and
+    // accounts can only have one contract deployed to them.
+    nearConfig.roketoContractName,
+    {
+      // View methods are read-only – they don't modify the state, but usually return some value
+      viewMethods: ['get_stream', 'get_account'],
+      // Change methods can modify the state, but you don't receive the returned value when called
+      changeMethods: ['account_update_cron_flag'],
       // Sender is the account ID to initialize transactions.
       // getAccountId() will return empty string if user is still unauthorized
       sender: walletConnection.getAccountId(),
@@ -54,11 +73,11 @@ async function initContract() {
   
   const provider = near.connection.provider;
   
-  return { contract, currentUser, nearConfig, walletConnection, provider };
+  return { contract, currentUser, nearConfig, walletConnection, provider, roketoContract };
 }
 
 window.nearInitPromise = initContract().then(
-  ({ contract, currentUser, nearConfig, walletConnection, provider }) => {
+  ({ contract, currentUser, nearConfig, walletConnection, provider, roketoContract }) => {
     let urlParams = new URLSearchParams(window.location.search);
     let lastTransaction;
     if(urlParams.has('transactionHashes')){
@@ -78,6 +97,7 @@ window.nearInitPromise = initContract().then(
           lastTransaction={lastTransaction}
           provider={provider}
           error={errorMessage}
+          roketoContract={roketoContract}
         />
 	  </Router>,
       document.getElementById('root')

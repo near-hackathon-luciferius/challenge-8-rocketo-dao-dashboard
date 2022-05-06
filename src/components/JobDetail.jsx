@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
-import Iframe from 'react-iframe';
 import Big from 'big.js';
 import JobDetailAdminCommands from './JobDetailAdminCommands';
+import JobDetailUserCommands from './JobDetailUserCommands';
 import ApplicationForm from './ApplicationForm';
 
-const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob}) => {
+const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob, roketoContract, onEnablePayment, onReceivePayment}) => {
   const { dao, job } = useParams();
   const [ jobData, setJobData ] = useState();
   const [ jobPayment, setJobPayment ] = useState();
+  const [ stream, setStream ] = useState();
 
   useEffect(() => {
     if(!daoData.jobs){
@@ -39,6 +40,22 @@ const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob
     setJobPayment(Big(data.payment).div(10 ** 24).toFixed(2))
   }, [daoData, job]);
 
+  useEffect(() => {
+    async function fetchData() {
+      if(!jobData || !jobData.payment_stream_id){
+        return;
+      }
+      const result = await roketoContract.get_stream(
+      {
+        stream_id: jobData.payment_stream_id
+      });
+      console.log(result);
+      setStream(result);
+    }
+
+    fetchData();
+  }, [jobData]);
+
   if(!jobData){
     return <>
               <header>
@@ -53,7 +70,12 @@ const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob
                    <h1>{jobData.name}'s Details</h1>
                  </header>
                  <div className='flex flex-row-wrap justify-between margin-row-small'>
-                   {currentUser.accountId === dao ? <JobDetailAdminCommands jobData={jobData} onCancelJob={onCancelJob} onStartJob={onStartJob}/> : null}
+                   {currentUser.accountId === dao 
+                   ? <JobDetailAdminCommands jobData={jobData} onCancelJob={onCancelJob} onStartJob={onStartJob}/> 
+                   : jobData && jobData.contracted === currentUser.accountId
+                      ? <JobDetailUserCommands currentUser={currentUser} roketoContract={roketoContract} onEnablePayment={onEnablePayment}
+                                               stream={stream} onReceivePayment={onReceivePayment} jobId={jobData.id}/>
+                      : null}
                  </div>
                  <div className='flex flex-row-wrap justify-between'>
                     <div className="details-view flex flex-col flex-grow medium-margin-right">
@@ -81,12 +103,9 @@ const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob
                         <div>{jobData.contracted}</div>
                       </div>
                     </div>
-                    {jobData.payment_stream_id 
-                      ? <div>
-                          <Iframe url={"https://test.app.roke.to/#/streams/"+jobData.payment_stream_id}
-                                  position="relative"
-                                  overflow="hidden"
-                                  className='roketo-iframe'/>
+                    {stream 
+                      ? <div className='details-view flex flex-col'>
+                          Some progress for the stream
                         </div>
                       : null}
                  </div>

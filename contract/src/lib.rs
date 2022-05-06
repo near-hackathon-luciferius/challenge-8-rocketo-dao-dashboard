@@ -3,7 +3,7 @@ use std::str::FromStr;
 
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::json_types::{U128, Base58CryptoHash};
-use near_sdk::{env, near_bindgen, PanicOnDefault, AccountId, BorshStorageKey, ext_contract, Gas};
+use near_sdk::{env, near_bindgen, PanicOnDefault, AccountId, BorshStorageKey, ext_contract, Gas, PromiseResult};
 use near_sdk::collections::{UnorderedMap};
 use near_sdk::serde::{Deserialize, Serialize};
 
@@ -60,6 +60,7 @@ pub struct ApplicationData{
 pub enum WorkState {
     Open, //waiting for applicants
     InProgress, //executing the task
+    Canceled, //ended without payment or partial payment
 }
 
 #[derive(BorshSerialize, BorshStorageKey)]
@@ -99,6 +100,8 @@ trait NearContract {
 #[ext_contract(ext_self)]
 pub trait ExtSelf {
     fn roketo_start_callback(dao_owner: AccountId, job_id: HashId, contracted: AccountId);
+    fn roketo_end_callback(dao_owner: AccountId, job_id: HashId);
+    fn roketo_receive_callback(dao_owner: AccountId, job_id: HashId);
 }
 
 #[near_bindgen]
@@ -204,7 +207,7 @@ impl Contract {
         assert!(env::attached_deposit() >= 10u128.pow(22), "You need to attach at least 0.01 NEAR for operational costs.");
 
         let mut payment: u128 = job.payment.into();
-        payment = payment+10u128.pow(22);
+        payment = payment+10u128.pow(18);
         let mut duration: u128 = job.payment_cycle_in_s.into();
         duration = duration;
         let near_per_sec: u64 = (payment/duration) as u64;
@@ -273,6 +276,122 @@ impl Contract {
         job.payment_stream_id = Some(account.last_created_stream);
 
         env::log_str(format!("Successfully started the job {} for the contracted {}", job.name, contracted).as_str());
+        self.daos.insert(&dao_owner, &dao);
+    }
+
+    #[payable]
+    pub fn receive_job_payment(
+        &mut self,
+        dao_owner: AccountId,
+        job_id: HashId
+    ){
+        let dao_option = self.daos.get(&dao_owner);
+        assert!(dao_option.is_some(), "There is no known DAO for {}", dao_owner);
+        let dao = dao_option.unwrap();
+        let job_index = dao.jobs.binary_search_by_key(&job_id, |job| job.id.clone());
+        assert!(job_index.is_ok(), "There is no job {:?} in the dao {}", job_id, dao_owner);
+        let job = dao.jobs.get(job_index.unwrap()).unwrap();
+        assert!(job.state == WorkState::InProgress, "You can only receive payment for jobs that are currently running.");
+        assert!(job.contracted == Some(env::predecessor_account_id()), "Only the contracted can receive the payment.");
+        assert!(env::attached_deposit() >= 10u128.pow(21), "You need to attach at least 0.001 NEAR for operational costs.");
+
+        let mut ids = Vec::new();
+        ids.push(job.payment_stream_id.unwrap());
+
+        let register = ext_wrap_near::storage_deposit(
+            Some(job.contracted.as_ref().unwrap().clone()),
+            AccountId::from_str(NEAR_WRAPPER_CONTRACT).unwrap(), 
+            10u128.pow(22), 
+            EXT_GAS);
+        let roketo = ext_roketo_contract::withdraw(
+            ids, 
+            AccountId::from_str(ROKETO_CONTRACT).unwrap(), 
+            1, 
+            EXT_GAS + EXT_GAS);
+        let callback = ext_self::roketo_receive_callback(
+            dao_owner,
+            job_id,
+            env::current_account_id(), 
+            0, 
+            EXT_GAS);
+        register.then(roketo).then(callback);
+    }
+
+    #[private]
+    pub fn roketo_receive_callback(
+        &mut self, 
+        dao_owner: AccountId,
+        job_id: HashId
+    ) {
+        let dao_option = self.daos.get(&dao_owner);
+        assert!(dao_option.is_some(), "There is no known DAO for {}", dao_owner);
+        let mut dao = dao_option.unwrap();
+        let job_index = dao.jobs.binary_search_by_key(&job_id, |job| job.id.clone());
+        assert!(job_index.is_ok(), "There is no job {:?} in the dao {}", job_id, dao_owner);
+        let job = dao.jobs.get_mut(job_index.unwrap()).unwrap();
+
+        match env::promise_result(0) {
+            PromiseResult::NotReady => unreachable!(),
+            PromiseResult::Failed => env::panic_str("Something went wrong during the withdrawl."),
+            PromiseResult::Successful(_) => {
+                env::log_str(format!("Successfully received available payment for the job {}.", job.name).as_str());
+            },
+        }
+    }
+
+    #[payable]
+    pub fn cancel_job(
+        &mut self,
+        job_id: HashId
+    ){
+        //TODO consider storage cost
+        let dao_owner = env::predecessor_account_id();
+        let dao_option = self.daos.get(&dao_owner);
+        assert!(dao_option.is_some(), "There is no known DAO for {}", dao_owner);
+        let dao = dao_option.unwrap();
+        let job_index = dao.jobs.binary_search_by_key(&job_id, |job| job.id.clone());
+        assert!(job_index.is_ok(), "There is no job {:?} in the dao {}", job_id, dao_owner);
+        let job = dao.jobs.get(job_index.unwrap()).unwrap();
+        assert!(job.state == WorkState::InProgress, "You can only cancel job that are currently running.");
+        assert!(env::attached_deposit() >= 10u128.pow(21), "You need to attach at least 0.001 NEAR for operational costs.");
+
+        let mut ids = Vec::new();
+        ids.push(job.payment_stream_id.unwrap());
+        let roketo = ext_roketo_contract::withdraw(
+            ids, 
+            AccountId::from_str(ROKETO_CONTRACT).unwrap(), 
+            1, 
+            EXT_GAS);
+        let callback = ext_self::roketo_end_callback(
+            dao_owner,
+            job_id,
+            env::current_account_id(), 
+            0, 
+            EXT_GAS);
+        roketo.then(callback);
+    }
+
+    #[private]
+    pub fn roketo_end_callback(
+        &mut self, 
+        dao_owner: AccountId,
+        job_id: HashId, 
+        #[callback_unwrap] success: bool
+    ) {
+        assert!(success, "Roketo failed to cancel the job. Maybe the stream already ended.");
+        let dao_option = self.daos.get(&dao_owner);
+        assert!(dao_option.is_some(), "There is no known DAO for {}", dao_owner);
+        let mut dao = dao_option.unwrap();
+        let job_index = dao.jobs.binary_search_by_key(&job_id, |job| job.id.clone());
+        assert!(job_index.is_ok(), "There is no job {:?} in the dao {}", job_id, dao_owner);
+        let job = dao.jobs.get_mut(job_index.unwrap()).unwrap();
+        
+        let contracted = job.contracted.as_ref().unwrap().clone();
+        job.contracted = None;
+        job.state = WorkState::Canceled;
+        job.payment_stream_id = None;
+
+        env::log_str(format!("Successfully canceled the job {} for the contracted {}", job.name, contracted).as_str());
         self.daos.insert(&dao_owner, &dao);
     }
 

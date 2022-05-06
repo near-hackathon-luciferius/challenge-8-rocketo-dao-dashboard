@@ -6,7 +6,7 @@ export default function SignIn({signIn}) {
     <>
       <main id="page-wrapper">
         <header>
-                      <h1>Kawaii Zoo Homepage</h1>
+                      <h1>DAO Dashboard Homepage</h1>
         </header>
         <Button large onClick={signIn} className='login'>Log in</Button>
         <p>
