@@ -9,6 +9,7 @@ import JobDetail from './components/JobDetail';
 import MembersOverview from './components/MembersOverview';
 import TasksOverview from './components/TasksOverview';
 import ApplicationOverview from './components/ApplicationOverview';
+import Voting from './components/Voting';
 import NotFound from './components/404.jsx';
 import 'materialize-css/dist/css/materialize.css'
 import './App.css';
@@ -199,6 +200,9 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
           </Route>
           <Route path="members">
             <Route index element={<MembersOverview daoData={daoData}/>}/>
+          </Route>
+          <Route path="governance">
+            <Route index element={<Voting daoData={daoData} loaded={loaded}/>}/>
           </Route>
           <Route path="*" element={<NotFound/>}/>
         </Route>

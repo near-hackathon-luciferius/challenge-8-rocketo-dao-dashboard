@@ -81599,7 +81599,10 @@ const Layout = _ref => {
   }, "Tasks"), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
     className: "menu-item",
     to: "members"
-  }, "Members")), /*#__PURE__*/_react.default.createElement("main", {
+  }, "Members"), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    className: "menu-item",
+    to: "governance"
+  }, "Governance")), /*#__PURE__*/_react.default.createElement("main", {
     id: "page-wrapper"
   }, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Outlet, null)));
 };
@@ -81839,6 +81842,7 @@ function DaoDashboard(_ref) {
   const [members, setMembers] = (0, _react.useState)('');
   const [tasks, setTasks] = (0, _react.useState)('');
   const [jobs, setJobs] = (0, _react.useState)('');
+  const [voting, setVoting] = (0, _react.useState)('');
   (0, _react.useEffect)(() => {
     if (!daoData.jobs) {
       return;
@@ -81846,6 +81850,7 @@ function DaoDashboard(_ref) {
 
     setJobs(daoData.jobs.length);
     setTasks(5);
+    setVoting(1);
     setMembers(daoData.jobs.map(j => j.contracted).concat(daoData.jobs.map(j => j.applicants).reduce(function (x, y) {
       return x.concat(y);
     }, []).map(a => a.applicant)).filter((value, index, array) => array.indexOf(value) === index && value).length + 1);
@@ -81896,7 +81901,7 @@ function DaoDashboard(_ref) {
   }, "Tasks")), /*#__PURE__*/_react.default.createElement("div", {
     className: "col s7 numbers"
   }, /*#__PURE__*/_react.default.createElement("h5", null, tasks)))))), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
-    className: "bm-item menu-item flex-grow",
+    className: "bm-item menu-item flex-grow medium-margin-right",
     to: "jobs"
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "card card-stats"
@@ -81912,7 +81917,24 @@ function DaoDashboard(_ref) {
     className: "small"
   }, "Jobs")), /*#__PURE__*/_react.default.createElement("div", {
     className: "col s7 numbers"
-  }, /*#__PURE__*/_react.default.createElement("h5", null, jobs))))))), /*#__PURE__*/_react.default.createElement("p", {
+  }, /*#__PURE__*/_react.default.createElement("h5", null, jobs)))))), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    className: "bm-item menu-item flex-grow",
+    to: "governance"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "card card-stats"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "card-body"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "row"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "col s5 text-center"
+  }, /*#__PURE__*/_react.default.createElement(_WorkOutlineOutlined.default, {
+    className: "icon-big"
+  }), /*#__PURE__*/_react.default.createElement("p", {
+    className: "small"
+  }, "Open Proposals")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "col s7 numbers"
+  }, /*#__PURE__*/_react.default.createElement("h5", null, voting))))))), /*#__PURE__*/_react.default.createElement("p", {
     className: "bigger-font preserve-newline"
   }, daoData.description));
 }
@@ -83515,7 +83537,7 @@ const TasksOverview = _ref => {
     url: "https://trello.com/b/Ywm3W9HB.html",
     position: "relative",
     overflow: "hidden",
-    className: "task-iframe"
+    className: "mockup-iframe"
   })));
 };
 
@@ -83662,7 +83684,46 @@ const ApplicationOverview = _ref => {
 
 var _default = ApplicationOverview;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","@mui/icons-material/ContentCopyOutlined":"../node_modules/@mui/icons-material/ContentCopyOutlined.js","@mui/icons-material/ArrowBackOutlined":"../node_modules/@mui/icons-material/ArrowBackOutlined.js","react-materialize":"../node_modules/react-materialize/lib/index.js"}],"images/404.jpg":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","@mui/icons-material/ContentCopyOutlined":"../node_modules/@mui/icons-material/ContentCopyOutlined.js","@mui/icons-material/ArrowBackOutlined":"../node_modules/@mui/icons-material/ArrowBackOutlined.js","react-materialize":"../node_modules/react-materialize/lib/index.js"}],"components/Voting.jsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactRouterDom = require("react-router-dom");
+
+var _reactIframe = _interopRequireDefault(require("react-iframe"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const Voting = _ref => {
+  let {
+    daoData,
+    loaded
+  } = _ref;
+  const {
+    dao
+  } = (0, _reactRouterDom.useParams)();
+
+  if (!loaded) {
+    return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, dao, " Governance")), /*#__PURE__*/_react.default.createElement("p", null, "Loading..."));
+  }
+
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, daoData.name, " Governance")), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(_reactIframe.default, {
+    url: "https://snapshot.org/#/sushigov.eth",
+    position: "relative",
+    overflow: "hidden",
+    className: "mockup-iframe"
+  })));
+};
+
+var _default = Voting;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","react-iframe":"../node_modules/react-iframe/dist/es/iframe.js"}],"images/404.jpg":[function(require,module,exports) {
 module.exports = "/404.d5d098f5.jpg";
 },{}],"components/404.jsx":[function(require,module,exports) {
 "use strict";
@@ -96230,6 +96291,8 @@ var _TasksOverview = _interopRequireDefault(require("./components/TasksOverview"
 
 var _ApplicationOverview = _interopRequireDefault(require("./components/ApplicationOverview"));
 
+var _Voting = _interopRequireDefault(require("./components/Voting"));
+
 var _2 = _interopRequireDefault(require("./components/404.jsx"));
 
 require("materialize-css/dist/css/materialize.css");
@@ -96477,6 +96540,14 @@ const App = _ref => {
       daoData: daoData
     })
   })), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
+    path: "governance"
+  }, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
+    index: true,
+    element: /*#__PURE__*/_react.default.createElement(_Voting.default, {
+      daoData: daoData,
+      loaded: loaded
+    })
+  })), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     path: "*",
     element: /*#__PURE__*/_react.default.createElement(_2.default, null)
   }))));
@@ -96484,7 +96555,7 @@ const App = _ref => {
 
 var _default = App;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","./components/SignIn":"components/SignIn.jsx","./layout":"layout.js","./dao-layout":"dao-layout.js","./components/CreateDao":"components/CreateDao.jsx","./components/DaoDashboard":"components/DaoDashboard.jsx","./components/JobsOverview":"components/JobsOverview.jsx","./components/JobDetail":"components/JobDetail.jsx","./components/MembersOverview":"components/MembersOverview.jsx","./components/TasksOverview":"components/TasksOverview.jsx","./components/ApplicationOverview":"components/ApplicationOverview.jsx","./components/404.jsx":"components/404.jsx","materialize-css/dist/css/materialize.css":"../node_modules/materialize-css/dist/css/materialize.css","./App.css":"App.css","big.js":"../node_modules/big.js/big.js","react-router-dom":"../node_modules/react-router-dom/index.js","../package.json":"../package.json","materialize-css":"../node_modules/materialize-css/dist/js/materialize.js"}],"config.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./components/SignIn":"components/SignIn.jsx","./layout":"layout.js","./dao-layout":"dao-layout.js","./components/CreateDao":"components/CreateDao.jsx","./components/DaoDashboard":"components/DaoDashboard.jsx","./components/JobsOverview":"components/JobsOverview.jsx","./components/JobDetail":"components/JobDetail.jsx","./components/MembersOverview":"components/MembersOverview.jsx","./components/TasksOverview":"components/TasksOverview.jsx","./components/ApplicationOverview":"components/ApplicationOverview.jsx","./components/Voting":"components/Voting.jsx","./components/404.jsx":"components/404.jsx","materialize-css/dist/css/materialize.css":"../node_modules/materialize-css/dist/css/materialize.css","./App.css":"App.css","big.js":"../node_modules/big.js/big.js","react-router-dom":"../node_modules/react-router-dom/index.js","../package.json":"../package.json","materialize-css":"../node_modules/materialize-css/dist/js/materialize.js"}],"config.js":[function(require,module,exports) {
 const CONTRACT_NAME = undefined || 'dao-dashboard.cryptosketches.testnet';
 
 function getConfig(env) {
@@ -112936,7 +113007,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50067" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51937" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -26,6 +26,10 @@ const Layout = ({setDao}) => {
         <Link className="menu-item" to="members">
           Members
         </Link>
+
+        <Link className="menu-item" to="governance">
+          Governance
+        </Link>
       </Menu>
       
       <main id="page-wrapper">

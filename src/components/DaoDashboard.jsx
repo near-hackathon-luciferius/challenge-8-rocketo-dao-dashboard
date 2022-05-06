@@ -9,6 +9,7 @@ export default function DaoDashboard({daoData, loaded}) {
   const [members, setMembers] = useState('');
   const [tasks, setTasks] = useState('');
   const [jobs, setJobs] = useState('');
+  const [voting, setVoting] = useState('');
 
   useEffect(() => {
     if(!daoData.jobs){
@@ -17,6 +18,7 @@ export default function DaoDashboard({daoData, loaded}) {
     
     setJobs(daoData.jobs.length);
     setTasks(5);
+    setVoting(1);
     setMembers(daoData.jobs.map((j) => j.contracted)
                       .concat(daoData.jobs.map((j) => j.applicants).reduce(function (x, y) { return x.concat(y); }, [])
                                     .map((a) => a.applicant))
@@ -70,7 +72,7 @@ export default function DaoDashboard({daoData, loaded}) {
             </div>
           </div>
         </Link>
-        <Link className="bm-item menu-item flex-grow" to='jobs'>
+        <Link className="bm-item menu-item flex-grow medium-margin-right" to='jobs'>
           <div className='card card-stats'>
             <div className='card-body'>
               <div className='row'>
@@ -80,6 +82,21 @@ export default function DaoDashboard({daoData, loaded}) {
                 </div>
                 <div className='col s7 numbers'>
                   <h5>{jobs}</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Link>
+        <Link className="bm-item menu-item flex-grow" to='governance'>
+          <div className='card card-stats'>
+            <div className='card-body'>
+              <div className='row'>
+                <div className='col s5 text-center'>
+                  <WorkOutlineOutlinedIcon className='icon-big'/>
+                  <p className='small'>Open Proposals</p>
+                </div>
+                <div className='col s7 numbers'>
+                  <h5>{voting}</h5>
                 </div>
               </div>
             </div>

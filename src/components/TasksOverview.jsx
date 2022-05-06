@@ -24,7 +24,7 @@ const TasksOverview = ({daoData, loaded}) => {
                     <Iframe url={"https://trello.com/b/Ywm3W9HB.html"}
                             position="relative"
                             overflow="hidden"
-                            className='task-iframe'/>
+                            className='mockup-iframe'/>
                   </div>
           </>
 }
