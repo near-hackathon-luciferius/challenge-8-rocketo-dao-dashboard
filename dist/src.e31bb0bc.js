@@ -81739,7 +81739,11 @@ function CreateDao(_ref) {
     className: "btn-icon"
   })), /*#__PURE__*/_react.default.createElement("div", null, "Got To Your DAO"))) : /*#__PURE__*/_react.default.createElement(_DaoCreationForm.default, {
     onDaoCreation: onDaoCreation
-  })) : null, /*#__PURE__*/_react.default.createElement("p", null, "Description of idea."), /*#__PURE__*/_react.default.createElement("h5", null, "All Existing DAOs"), /*#__PURE__*/_react.default.createElement("div", {
+  })) : null, /*#__PURE__*/_react.default.createElement("div", {
+    className: "text-bigger"
+  }, /*#__PURE__*/_react.default.createElement("p", null, "This app solves the problem, that today DAOs have no centeral place for management. They have a central point of communication - which is Discord, but they have a heap of other tools for task management (trello), job postings (website), payment handling (manual), voting (snapshot) and drafting documents (google docs)."), /*#__PURE__*/_react.default.createElement("p", null, "This app combines all DAO related task into one unified DAO Management tool."), /*#__PURE__*/_react.default.createElement("ol", null, /*#__PURE__*/_react.default.createElement("li", null, "You can manage you DAO members and their roles which synchronizes with your Discord Server."), /*#__PURE__*/_react.default.createElement("li", null, "You can manage, discuss, assign and provide payment for tasks. Tasks are payed in full after completion."), /*#__PURE__*/_react.default.createElement("li", null, "You can post job offerings, where your members can apply for the jobs. The payment is powered by", /*#__PURE__*/_react.default.createElement("a", {
+    href: "https://www.roke.to/"
+  }, "Roketo's"), " innovative money streaming. So your members get paid while they work."), /*#__PURE__*/_react.default.createElement("li", null, "You can draft proposals for you whole community to vote on.")), /*#__PURE__*/_react.default.createElement("p", null, "All DAOs get their own custom website. If you are interested in seeing how that looks in real life, click on one of the existing DAOs down below and check their DAO Dashboard.")), /*#__PURE__*/_react.default.createElement("h5", null, "All Existing DAOs"), /*#__PURE__*/_react.default.createElement("div", {
     className: "flex flex-col"
   }, daos.length > 0 ? daos.map(dao => /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
     className: "margin-row-small text-bigger bm-item menu-item flex flex-row",
@@ -113007,7 +113011,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51937" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56598" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

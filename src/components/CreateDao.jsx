@@ -46,9 +46,36 @@ export default function CreateDao({version, currentUser, contract, onDaoCreation
             :<DaoCreationForm onDaoCreation={onDaoCreation}/>}
           </div>
         : null}
-        <p>
-            Description of idea.
-        </p>
+        <div className='text-bigger'>
+          <p>
+              This app solves the problem, that today DAOs have no centeral place for management.
+              They have a central point of communication - which is Discord, but they have a heap
+              of other tools for task management (trello), job postings (website), payment handling
+              (manual), voting (snapshot) and drafting documents (google docs).
+          </p>
+          <p>
+              This app combines all DAO related task into one unified DAO Management tool.
+          </p>
+          <ol>
+            <li>You can manage you DAO members and their roles which synchronizes with your Discord Server.</li>
+            <li>
+              You can manage, discuss, assign and provide payment for tasks. Tasks are payed in full
+              after completion.
+            </li>
+            <li>
+              You can post job offerings, where your members can apply for the jobs. The payment is powered by
+              <a href='https://www.roke.to/'>Roketo's</a> innovative money streaming. So your members get paid
+              while they work.
+            </li>
+            <li>
+              You can draft proposals for you whole community to vote on.
+            </li>
+          </ol>
+          <p>
+              All DAOs get their own custom website. If you are interested in seeing how that looks in real life,
+              click on one of the existing DAOs down below and check their DAO Dashboard.
+          </p>
+        </div>
         <h5>All Existing DAOs</h5>
         <div className='flex flex-col'>
           {daos.length > 0
