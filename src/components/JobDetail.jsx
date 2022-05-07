@@ -4,6 +4,7 @@ import Big from 'big.js';
 import JobDetailAdminCommands from './JobDetailAdminCommands';
 import JobDetailUserCommands from './JobDetailUserCommands';
 import ApplicationForm from './ApplicationForm';
+import { StreamDashboard } from './StreamDashboard';
 import { Button } from 'react-materialize';
 
 const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob, roketoContract, onEnablePayment, onReceivePayment, wrapContract, onUnwrap}) => {
@@ -147,9 +148,9 @@ const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob
                         <div>{jobData.contracted}</div>
                       </div>
                     </div>
-                    {stream && stream.status == 'Active'
-                      ? <div className='details-view flex flex-col'>
-                          Some progress for the stream
+                    {stream
+                      ? <div className='details-view'>
+                          <StreamDashboard stream={stream} account={currentUser}/>
                         </div>
                       : null}
                  </div>
