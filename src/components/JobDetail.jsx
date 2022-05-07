@@ -59,6 +59,10 @@ const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob
     setJobPayment(Big(data.payment).div(10 ** 24).toFixed(2))
   }, [daoData, job]);
 
+  const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+  }
+
   useEffect(() => {
     async function fetchData() {
       if(!jobData || !jobData.payment_stream_id){
@@ -69,11 +73,12 @@ const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob
         stream_id: jobData.payment_stream_id
       });
       console.log(result);
+      await sleep(1000);
       setStream(result);
     }
 
     fetchData();
-  }, [jobData]);
+  }, [jobData, stream, roketoContract]);
 
   useEffect(() => {
     if(jobData && stream){

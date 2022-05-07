@@ -54,7 +54,7 @@ const JobsOverview = ({daoData, loaded, currentUser, onJobCreation}) => {
                           </Link>
                         </div>)}
                     </div>)
-                  : <p>
+                  : <p className='mb-8'>
                         Currently there are no open jobs available.
                     </p>}
                   <h5>Active Jobs</h5>
@@ -73,7 +73,7 @@ const JobsOverview = ({daoData, loaded, currentUser, onJobCreation}) => {
                           </Link>
                         </div>)}
                     </div>)
-                  : <p>
+                  : <p className='mb-8'>
                         Currently there are no active jobs.
                     </p>}
                   <h5>Canceled Jobs</h5>
@@ -92,7 +92,7 @@ const JobsOverview = ({daoData, loaded, currentUser, onJobCreation}) => {
                           </Link>
                         </div>)}
                     </div>)
-                  : <p>
+                  : <p className='mb-8'>
                         Currently there are no canceled jobs.
                     </p>}
                   {(dao === currentUser.accountId) ? <JobForm onJobCreation={onJobCreation}/> : null}

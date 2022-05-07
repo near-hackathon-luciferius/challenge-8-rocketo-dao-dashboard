@@ -60,7 +60,8 @@ pub struct ApplicationData{
 pub enum WorkState {
     Open, //waiting for applicants
     InProgress, //executing the task
-    Completed //payment stream ended
+    Completed, //payment stream ended
+    Canceled //payment stream ended
 }
 
 #[derive(BorshSerialize, BorshStorageKey)]
@@ -86,6 +87,21 @@ pub struct Account{
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, BorshDeserialize, BorshSerialize)]
 #[serde(crate = "near_sdk::serde")]
+enum Status {
+    Initialized,
+    Active,
+    Paused,
+    Finished(Reason),   
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, BorshDeserialize, BorshSerialize)]
+#[serde(crate = "near_sdk::serde")]
+pub struct Reason{
+    reason: String
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, BorshDeserialize, BorshSerialize)]
+#[serde(crate = "near_sdk::serde")]
 pub struct Stream{
     balance: U128,
     cliff: Option<u64>,
@@ -97,7 +113,7 @@ pub struct Stream{
     last_action: u64,
     owner_id: AccountId,
     receiver_id: AccountId,
-    status: String,
+    status: Status,
     timestamp_created: u64,
     token_account_id: AccountId,
     tokens_per_sec: U128,
@@ -358,10 +374,18 @@ impl Contract {
         assert!(job_index.is_ok(), "There is no job {:?} in the dao {}", job_id, dao_owner);
         let job = dao.jobs.get_mut(job_index.unwrap()).unwrap();
 
-        if stream.status != "Active".to_string() {
-            job.contracted = None;
-            job.state = WorkState::Completed;
-            job.payment_stream_id = None;
+        match stream.status {
+            Status::Initialized => {},
+            Status::Active => {},
+            Status::Paused => {},
+            Status::Finished(result) =>{
+                if result.reason == "FinishedNaturally"{
+                    job.state = WorkState::Completed;
+                }
+                else{
+                    job.state = WorkState::Canceled;
+                }
+            }
         }
 
         match env::promise_result(0) {

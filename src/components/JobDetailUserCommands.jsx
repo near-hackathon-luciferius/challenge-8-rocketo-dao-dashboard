@@ -15,7 +15,7 @@ const JobDetailUserCommands = ({currentUser, roketoContract, onEnablePayment, st
         }
 
         fetchData();
-    }, [currentUser]);
+    }, [currentUser, roketoContract]);
 
   if(!account){
     return null

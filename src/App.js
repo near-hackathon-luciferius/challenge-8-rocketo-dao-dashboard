@@ -48,7 +48,7 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
           //receive payment
           message = result.receipts_outcome[result.receipts_outcome.length-3].outcome.logs.pop();
         }
-        if(!message && result.transaction.actions[0].FunctionCall.method_name == 'stop_stream'){
+        if(!message && result.transaction.actions[0].FunctionCall.method_name === 'stop_stream'){
           //TODO start update status contract call
           message = "Executed payment stream cancellation method."
         }

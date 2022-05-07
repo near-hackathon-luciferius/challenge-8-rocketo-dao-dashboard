@@ -14,8 +14,8 @@ export function StreamDashboard({stream, account}) {
     tf,
     progresses,
     percentages,
-    isDead,
-    progress: {full, withdrawn, streamed},
+    dateEnd,
+    progress: {full, withdrawn, streamed, available, left},
   } = streamViewData(stream);
   const direction = streamDirection({stream, account});
 
@@ -27,10 +27,12 @@ export function StreamDashboard({stream, account}) {
         'items-center',
       )}
     >
+      <h5 className='mb-8'>Payment Details</h5>
       <div className="-mb-32">
         <Tooltip
           align={{offset: [0, -20]}}
           offset={{top: 20}}
+          overlayStyle={{ 'background-color': '#1f1d37' }}
           overlay={
             <div className="text-left">
               <StreamProgressPercentage
@@ -82,6 +84,18 @@ export function StreamDashboard({stream, account}) {
         direction={direction}
         className="mt-6 mb-6"
       />
+      <div className='flex flex-grow justify-between margin-row-small'>
+        <div className='text-unimportant min-margin-right'>Available to receive:</div>
+        <div>{tf.amount(available)} {tf.token_name}</div>
+      </div>
+      <div className='flex flex-grow justify-between margin-row-small'>
+        <div className='text-unimportant min-margin-right'>Locked amount:</div>
+        <div>{tf.amount(left)} {tf.token_name}</div>
+      </div>
+      <div className='flex flex-grow justify-between margin-row-small'>
+        <div className='text-unimportant min-margin-right'>Fully unlocked:</div>
+        <div>{dateEnd.toLocaleString()}</div>
+      </div>
     </div>
   );
 }
