@@ -59,7 +59,7 @@ async function initContract() {
     // accountId of the contract we will be loading
     // NOTE: All contracts on NEAR are deployed to an account and
     // accounts can only have one contract deployed to them.
-    nearConfig.roketoContractName,
+    "streaming-r-v2.dcversus.testnet",
     {
       // View methods are read-only – they don't modify the state, but usually return some value
       viewMethods: ['get_stream', 'get_account'],
@@ -70,14 +70,33 @@ async function initContract() {
       sender: walletConnection.getAccountId(),
     }
   );
+
+  // Initializing our contract APIs by contract name and configuration
+  const wrapContract = await new nearAPI.Contract(
+    // User's accountId as a string
+    walletConnection.account(),
+    // accountId of the contract we will be loading
+    // NOTE: All contracts on NEAR are deployed to an account and
+    // accounts can only have one contract deployed to them.
+    "wrap.testnet",
+    {
+      // View methods are read-only – they don't modify the state, but usually return some value
+      viewMethods: ['ft_balance_of'],
+      // Change methods can modify the state, but you don't receive the returned value when called
+      changeMethods: ['near_withdraw'],
+      // Sender is the account ID to initialize transactions.
+      // getAccountId() will return empty string if user is still unauthorized
+      sender: walletConnection.getAccountId(),
+    }
+  );
   
   const provider = near.connection.provider;
   
-  return { contract, currentUser, nearConfig, walletConnection, provider, roketoContract };
+  return { contract, currentUser, nearConfig, walletConnection, provider, roketoContract, wrapContract };
 }
 
 window.nearInitPromise = initContract().then(
-  ({ contract, currentUser, nearConfig, walletConnection, provider, roketoContract }) => {
+  ({ contract, currentUser, nearConfig, walletConnection, provider, roketoContract, wrapContract }) => {
     let urlParams = new URLSearchParams(window.location.search);
     let lastTransaction;
     if(urlParams.has('transactionHashes')){
@@ -98,6 +117,7 @@ window.nearInitPromise = initContract().then(
           provider={provider}
           error={errorMessage}
           roketoContract={roketoContract}
+          wrapContract={wrapContract}
         />
 	  </Router>,
       document.getElementById('root')

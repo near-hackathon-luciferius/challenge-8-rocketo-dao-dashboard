@@ -20,7 +20,7 @@ require('materialize-css');
 
 const BOATLOAD_OF_GAS = Big(3).times(10 ** 14).toFixed();
 
-const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransaction, error, roketoContract }) => {
+const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransaction, error, roketoContract, wrapContract }) => {
   const [message, setMessage] = useState('');
   const [dao, setDao] = useState('');
   const [daoData, setDaoData] = useState([]);
@@ -188,6 +188,22 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
         console.log("Successfully received payment.");
       })
   }
+
+  const onUnwrap = async () => {
+    const balance = await wrapContract.ft_balance_of(
+      {
+        account_id: currentUser.accountId
+      }
+    );
+    await wrapContract.near_withdraw(
+      {
+        amount: balance
+      },
+      BOATLOAD_OF_GAS,
+      1
+    );
+    console.log("Successfully unwrapped.");
+  }
   
   const signIn = () => {
     wallet.requestSignIn(
@@ -225,7 +241,8 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
             <Route path=":job" element={<JobDetail daoData={daoData} currentUser={currentUser} 
                                                    onCancelJob={onCancelJob} onStartJob={onStartJob} 
                                                    onApplyForJob={onApplyForJob} roketoContract={roketoContract}
-                                                   onEnablePayment={onEnablePayment} onReceivePayment={onReceivePayment}/>}/>
+                                                   onEnablePayment={onEnablePayment} onReceivePayment={onReceivePayment}
+                                                   wrapContract={wrapContract} onUnwrap={onUnwrap}/>}/>
             {currentUser.accountId === dao
               ? <Route path=":job/applications" element={<ApplicationOverview daoData={daoData}/>}/>
               : null

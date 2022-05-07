@@ -1,5 +1,4 @@
 const CONTRACT_NAME = process.env.CONTRACT_NAME || 'dao-dashboard.cryptosketches.testnet';
-const ROKETO_CONTRACT_NAME = process.env.ROKETO_CONTRACT_NAME || 'streaming-r-v2.dcversus.testnet';
 
 function getConfig(env) {
   switch(env) {
@@ -9,7 +8,6 @@ function getConfig(env) {
         networkId: 'mainnet',
         nodeUrl: 'https://rpc.mainnet.near.org',
         contractName: CONTRACT_NAME,
-        //roketoContractName: ROKETO_CONTRACT_NAME,
         walletUrl: 'https://wallet.near.org',
         helperUrl: 'https://helper.mainnet.near.org'
       };
@@ -19,7 +17,6 @@ function getConfig(env) {
         networkId: 'testnet',
         nodeUrl: 'https://rpc.testnet.near.org',
         contractName: CONTRACT_NAME,
-        //roketoContractName: ROKETO_CONTRACT_NAME,
         walletUrl: 'https://wallet.testnet.near.org',
         helperUrl: 'https://helper.testnet.near.org'
       };
@@ -28,7 +25,6 @@ function getConfig(env) {
         networkId: 'betanet',
         nodeUrl: 'https://rpc.betanet.near.org',
         contractName: CONTRACT_NAME,
-        roketoContractName: ROKETO_CONTRACT_NAME,
         walletUrl: 'https://wallet.betanet.near.org',
         helperUrl: 'https://helper.betanet.near.org'
       };
@@ -39,7 +35,6 @@ function getConfig(env) {
         keyPath: `${process.env.HOME}/.near/validator_key.json`,
         walletUrl: 'http://localhost:4000/wallet',
         contractName: CONTRACT_NAME,
-        //roketoContractName: ROKETO_CONTRACT_NAME,
       };
     case 'test':
     case 'ci':
@@ -47,7 +42,6 @@ function getConfig(env) {
         networkId: 'shared-test',
         nodeUrl: 'https://rpc.ci-testnet.near.org',
         contractName: CONTRACT_NAME,
-        //roketoContractName: ROKETO_CONTRACT_NAME,
         masterAccount: 'test.near'
       };
     case 'ci-betanet':
@@ -55,7 +49,6 @@ function getConfig(env) {
         networkId: 'shared-test-staging',
         nodeUrl: 'https://rpc.ci-betanet.near.org',
         contractName: CONTRACT_NAME,
-        //roketoContractName: ROKETO_CONTRACT_NAME,
         masterAccount: 'test.near'
       };
     default:

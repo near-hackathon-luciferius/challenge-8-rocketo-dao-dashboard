@@ -20,7 +20,7 @@ const JobDetailAdminCommands = ({jobData, onCancelJob, onStartJob, stream}) => {
 
   switch(jobData.state){
       case 'InProgress':
-          if(stream && stream.state !== 'Active'){
+          if(stream && stream.status !== 'Active'){
               return null;
           }
           return <>

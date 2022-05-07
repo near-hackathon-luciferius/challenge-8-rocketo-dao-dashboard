@@ -83098,7 +83098,7 @@ const JobDetailAdminCommands = _ref => {
 
   switch (jobData.state) {
     case 'InProgress':
-      if (stream && stream.state !== 'Active') {
+      if (stream && stream.status !== 'Active') {
         return null;
       }
 
@@ -83255,6 +83255,8 @@ var _JobDetailUserCommands = _interopRequireDefault(require("./JobDetailUserComm
 
 var _ApplicationForm = _interopRequireDefault(require("./ApplicationForm"));
 
+var _reactMaterialize = require("react-materialize");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -83270,7 +83272,9 @@ const JobDetail = _ref => {
     onApplyForJob,
     roketoContract,
     onEnablePayment,
-    onReceivePayment
+    onReceivePayment,
+    wrapContract,
+    onUnwrap
   } = _ref;
   const {
     dao,
@@ -83280,6 +83284,21 @@ const JobDetail = _ref => {
   const [jobPayment, setJobPayment] = (0, _react.useState)();
   const [stream, setStream] = (0, _react.useState)();
   const [state, setState] = (0, _react.useState)();
+  const [hasWrapped, setHasWrapped] = (0, _react.useState)(false);
+  (0, _react.useEffect)(() => {
+    async function fetchData() {
+      const result = await wrapContract.ft_balance_of({
+        account_id: currentUser.accountId
+      });
+      console.log(result);
+
+      if (result) {
+        setHasWrapped(parseInt(result) > 0);
+      }
+    }
+
+    fetchData();
+  }, [currentUser, wrapContract]);
   (0, _react.useEffect)(() => {
     if (!daoData.jobs) {
       return;
@@ -83332,7 +83351,7 @@ const JobDetail = _ref => {
     if (jobData && stream) {
       switch (jobData.state) {
         case 'InProgress':
-          if (stream.state === 'Active') {
+          if (stream.status === 'Active') {
             setState('Running');
           } else {
             setState('Completed/Cancelled');
@@ -83352,8 +83371,13 @@ const JobDetail = _ref => {
   }
 
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, jobData.name, "'s Details")), /*#__PURE__*/_react.default.createElement("div", {
-    className: "flex flex-row-wrap justify-between margin-row-small"
-  }, currentUser.accountId === dao ? /*#__PURE__*/_react.default.createElement(_JobDetailAdminCommands.default, {
+    className: "flex flex-row-wrap margin-row-small"
+  }, hasWrapped ? /*#__PURE__*/_react.default.createElement(_reactMaterialize.Button, {
+    large: true,
+    tooltip: "You have wrapped NEAR. This function will unwrap all wrapped near.",
+    onClick: onUnwrap,
+    className: "medium-margin-right"
+  }, "Unwrap NEAR") : null, currentUser.accountId === dao ? /*#__PURE__*/_react.default.createElement(_JobDetailAdminCommands.default, {
     jobData: jobData,
     onCancelJob: onCancelJob,
     onStartJob: onStartJob,
@@ -83391,7 +83415,7 @@ const JobDetail = _ref => {
     className: "flex justify-between margin-row-small"
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "text-unimportant min-margin-right"
-  }, "Contracted:"), /*#__PURE__*/_react.default.createElement("div", null, jobData.contracted))), stream && stream.state == 'Active' ? /*#__PURE__*/_react.default.createElement("div", {
+  }, "Contracted:"), /*#__PURE__*/_react.default.createElement("div", null, jobData.contracted))), stream && stream.status == 'Active' ? /*#__PURE__*/_react.default.createElement("div", {
     className: "details-view flex flex-col"
   }, "Some progress for the stream") : null), dao !== currentUser.accountId && jobData.state === 'Open' ? /*#__PURE__*/_react.default.createElement("div", {
     className: "margin-row-big"
@@ -83403,7 +83427,7 @@ const JobDetail = _ref => {
 
 var _default = JobDetail;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","big.js":"../node_modules/big.js/big.js","./JobDetailAdminCommands":"components/JobDetailAdminCommands.jsx","./JobDetailUserCommands":"components/JobDetailUserCommands.jsx","./ApplicationForm":"components/ApplicationForm.jsx"}],"components/MembersOverview.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","big.js":"../node_modules/big.js/big.js","./JobDetailAdminCommands":"components/JobDetailAdminCommands.jsx","./JobDetailUserCommands":"components/JobDetailUserCommands.jsx","./ApplicationForm":"components/ApplicationForm.jsx","react-materialize":"../node_modules/react-materialize/lib/index.js"}],"components/MembersOverview.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -96435,7 +96459,8 @@ const App = _ref => {
     provider,
     lastTransaction,
     error,
-    roketoContract
+    roketoContract,
+    wrapContract
   } = _ref;
   const [message, setMessage] = (0, _react.useState)('');
   const [dao, setDao] = (0, _react.useState)('');
@@ -96584,6 +96609,16 @@ const App = _ref => {
     });
   };
 
+  const onUnwrap = async () => {
+    const balance = await wrapContract.ft_balance_of({
+      account_id: currentUser.accountId
+    });
+    await wrapContract.near_withdraw({
+      amount: balance
+    }, BOATLOAD_OF_GAS, 1);
+    console.log("Successfully unwrapped.");
+  };
+
   const signIn = () => {
     wallet.requestSignIn({
       contractId: nearConfig.contractName,
@@ -96659,7 +96694,9 @@ const App = _ref => {
       onApplyForJob: onApplyForJob,
       roketoContract: roketoContract,
       onEnablePayment: onEnablePayment,
-      onReceivePayment: onReceivePayment
+      onReceivePayment: onReceivePayment,
+      wrapContract: wrapContract,
+      onUnwrap: onUnwrap
     })
   }), currentUser.accountId === dao ? /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     path: ":job/applications",
@@ -96699,7 +96736,6 @@ var _default = App;
 exports.default = _default;
 },{"react":"../node_modules/react/index.js","./components/SignIn":"components/SignIn.jsx","./layout":"layout.js","./dao-layout":"dao-layout.js","./components/CreateDao":"components/CreateDao.jsx","./components/DaoDashboard":"components/DaoDashboard.jsx","./components/JobsOverview":"components/JobsOverview.jsx","./components/JobDetail":"components/JobDetail.jsx","./components/MembersOverview":"components/MembersOverview.jsx","./components/TasksOverview":"components/TasksOverview.jsx","./components/ApplicationOverview":"components/ApplicationOverview.jsx","./components/Voting":"components/Voting.jsx","./components/404.jsx":"components/404.jsx","materialize-css/dist/css/materialize.css":"../node_modules/materialize-css/dist/css/materialize.css","./App.css":"App.css","big.js":"../node_modules/big.js/big.js","react-router-dom":"../node_modules/react-router-dom/index.js","../package.json":"../package.json","materialize-css":"../node_modules/materialize-css/dist/js/materialize.js"}],"config.js":[function(require,module,exports) {
 const CONTRACT_NAME = undefined || 'dao-dashboard.cryptosketches.testnet';
-const ROKETO_CONTRACT_NAME = undefined || 'streaming-r-v2.dcversus.testnet';
 
 function getConfig(env) {
   switch (env) {
@@ -96709,7 +96745,6 @@ function getConfig(env) {
         networkId: 'mainnet',
         nodeUrl: 'https://rpc.mainnet.near.org',
         contractName: CONTRACT_NAME,
-        //roketoContractName: ROKETO_CONTRACT_NAME,
         walletUrl: 'https://wallet.near.org',
         helperUrl: 'https://helper.mainnet.near.org'
       };
@@ -96720,7 +96755,6 @@ function getConfig(env) {
         networkId: 'testnet',
         nodeUrl: 'https://rpc.testnet.near.org',
         contractName: CONTRACT_NAME,
-        //roketoContractName: ROKETO_CONTRACT_NAME,
         walletUrl: 'https://wallet.testnet.near.org',
         helperUrl: 'https://helper.testnet.near.org'
       };
@@ -96730,7 +96764,6 @@ function getConfig(env) {
         networkId: 'betanet',
         nodeUrl: 'https://rpc.betanet.near.org',
         contractName: CONTRACT_NAME,
-        roketoContractName: ROKETO_CONTRACT_NAME,
         walletUrl: 'https://wallet.betanet.near.org',
         helperUrl: 'https://helper.betanet.near.org'
       };
@@ -96741,8 +96774,7 @@ function getConfig(env) {
         nodeUrl: 'http://localhost:3030',
         keyPath: `${"C:\\Users\\9QJ6PC"}/.near/validator_key.json`,
         walletUrl: 'http://localhost:4000/wallet',
-        contractName: CONTRACT_NAME //roketoContractName: ROKETO_CONTRACT_NAME,
-
+        contractName: CONTRACT_NAME
       };
 
     case 'test':
@@ -96751,7 +96783,6 @@ function getConfig(env) {
         networkId: 'shared-test',
         nodeUrl: 'https://rpc.ci-testnet.near.org',
         contractName: CONTRACT_NAME,
-        //roketoContractName: ROKETO_CONTRACT_NAME,
         masterAccount: 'test.near'
       };
 
@@ -96760,7 +96791,6 @@ function getConfig(env) {
         networkId: 'shared-test-staging',
         nodeUrl: 'https://rpc.ci-betanet.near.org',
         contractName: CONTRACT_NAME,
-        //roketoContractName: ROKETO_CONTRACT_NAME,
         masterAccount: 'test.near'
       };
 
@@ -113092,11 +113122,25 @@ async function initContract() {
   walletConnection.account(), // accountId of the contract we will be loading
   // NOTE: All contracts on NEAR are deployed to an account and
   // accounts can only have one contract deployed to them.
-  nearConfig.roketoContractName, {
+  "streaming-r-v2.dcversus.testnet", {
     // View methods are read-only – they don't modify the state, but usually return some value
     viewMethods: ['get_stream', 'get_account'],
     // Change methods can modify the state, but you don't receive the returned value when called
     changeMethods: ['account_update_cron_flag', 'stop_stream'],
+    // Sender is the account ID to initialize transactions.
+    // getAccountId() will return empty string if user is still unauthorized
+    sender: walletConnection.getAccountId()
+  }); // Initializing our contract APIs by contract name and configuration
+
+  const wrapContract = await new nearAPI.Contract( // User's accountId as a string
+  walletConnection.account(), // accountId of the contract we will be loading
+  // NOTE: All contracts on NEAR are deployed to an account and
+  // accounts can only have one contract deployed to them.
+  "wrap.testnet", {
+    // View methods are read-only – they don't modify the state, but usually return some value
+    viewMethods: ['ft_balance_of'],
+    // Change methods can modify the state, but you don't receive the returned value when called
+    changeMethods: ['near_withdraw'],
     // Sender is the account ID to initialize transactions.
     // getAccountId() will return empty string if user is still unauthorized
     sender: walletConnection.getAccountId()
@@ -113108,7 +113152,8 @@ async function initContract() {
     nearConfig,
     walletConnection,
     provider,
-    roketoContract
+    roketoContract,
+    wrapContract
   };
 }
 
@@ -113119,7 +113164,8 @@ window.nearInitPromise = initContract().then(_ref => {
     nearConfig,
     walletConnection,
     provider,
-    roketoContract
+    roketoContract,
+    wrapContract
   } = _ref;
   let urlParams = new URLSearchParams(window.location.search);
   let lastTransaction;
@@ -113142,7 +113188,8 @@ window.nearInitPromise = initContract().then(_ref => {
     lastTransaction: lastTransaction,
     provider: provider,
     error: errorMessage,
-    roketoContract: roketoContract
+    roketoContract: roketoContract,
+    wrapContract: wrapContract
   })), document.getElementById('root'));
 });
 },{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","react-router-dom":"../node_modules/react-router-dom/index.js","./App":"App.js","./config.js":"config.js","near-api-js":"../node_modules/near-api-js/lib/browser-index.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -113173,7 +113220,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61704" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65147" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

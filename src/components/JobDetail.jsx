@@ -4,13 +4,30 @@ import Big from 'big.js';
 import JobDetailAdminCommands from './JobDetailAdminCommands';
 import JobDetailUserCommands from './JobDetailUserCommands';
 import ApplicationForm from './ApplicationForm';
+import { Button } from 'react-materialize';
 
-const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob, roketoContract, onEnablePayment, onReceivePayment}) => {
+const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob, roketoContract, onEnablePayment, onReceivePayment, wrapContract, onUnwrap}) => {
   const { dao, job } = useParams();
   const [ jobData, setJobData ] = useState();
   const [ jobPayment, setJobPayment ] = useState();
   const [ stream, setStream ] = useState();
   const [ state, setState ] = useState();
+  const [ hasWrapped, setHasWrapped ] = useState(false);
+
+  useEffect(() => {
+    async function fetchData() {
+      const result = await wrapContract.ft_balance_of(
+      {
+        account_id: currentUser.accountId
+      });
+      console.log(result);
+      if(result){
+        setHasWrapped(parseInt(result) > 0);
+      }
+    }
+
+    fetchData();
+  }, [currentUser, wrapContract]);
 
   useEffect(() => {
     if(!daoData.jobs){
@@ -61,7 +78,7 @@ const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob
     if(jobData && stream){
       switch(jobData.state){
         case 'InProgress':
-          if(stream.state === 'Active'){
+          if(stream.status === 'Active'){
             setState('Running')
           }
           else{
@@ -88,7 +105,15 @@ const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob
                  <header>
                    <h1>{jobData.name}'s Details</h1>
                  </header>
-                 <div className='flex flex-row-wrap justify-between margin-row-small'>
+                 <div className='flex flex-row-wrap margin-row-small'>
+                   {hasWrapped
+                   ? <Button large 
+                             tooltip='You have wrapped NEAR. This function will unwrap all wrapped near.' 
+                             onClick={onUnwrap}
+                             className='medium-margin-right'>
+                         Unwrap NEAR
+                     </Button>
+                   : null}
                    {currentUser.accountId === dao 
                    ? <JobDetailAdminCommands jobData={jobData} onCancelJob={onCancelJob} onStartJob={onStartJob} stream={stream}/> 
                    : jobData && jobData.contracted === currentUser.accountId
@@ -122,7 +147,7 @@ const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob
                         <div>{jobData.contracted}</div>
                       </div>
                     </div>
-                    {stream && stream.state == 'Active'
+                    {stream && stream.status == 'Active'
                       ? <div className='details-view flex flex-col'>
                           Some progress for the stream
                         </div>
