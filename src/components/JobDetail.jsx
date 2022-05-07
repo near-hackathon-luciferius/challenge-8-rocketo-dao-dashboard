@@ -10,6 +10,7 @@ const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob
   const [ jobData, setJobData ] = useState();
   const [ jobPayment, setJobPayment ] = useState();
   const [ stream, setStream ] = useState();
+  const [ state, setState ] = useState();
 
   useEffect(() => {
     if(!daoData.jobs){
@@ -56,6 +57,24 @@ const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob
     fetchData();
   }, [jobData]);
 
+  useEffect(() => {
+    if(jobData && stream){
+      switch(jobData.state){
+        case 'InProgress':
+          if(stream.state === 'Active'){
+            setState('Running')
+          }
+          else{
+            setState('Completed/Cancelled')
+          }
+          break;
+        default:
+          setState(jobData.state)
+          break;
+      }
+    }
+  }, [jobData, stream]);
+
   if(!jobData){
     return <>
               <header>
@@ -71,7 +90,7 @@ const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob
                  </header>
                  <div className='flex flex-row-wrap justify-between margin-row-small'>
                    {currentUser.accountId === dao 
-                   ? <JobDetailAdminCommands jobData={jobData} onCancelJob={onCancelJob} onStartJob={onStartJob}/> 
+                   ? <JobDetailAdminCommands jobData={jobData} onCancelJob={onCancelJob} onStartJob={onStartJob} stream={stream}/> 
                    : jobData && jobData.contracted === currentUser.accountId
                       ? <JobDetailUserCommands currentUser={currentUser} roketoContract={roketoContract} onEnablePayment={onEnablePayment}
                                                stream={stream} onReceivePayment={onReceivePayment} jobId={jobData.id}/>
@@ -84,7 +103,7 @@ const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob
                       </div>
                       <div className='flex justify-between margin-row-small'>
                         <div className='text-unimportant min-margin-right'>Status:</div>
-                        <div>{jobData.state}</div>
+                        <div>{state}</div>
                       </div>
                       <div className='flex justify-between margin-row-small'>
                         <div className='text-unimportant min-margin-right'>Total Payment:</div>
@@ -103,7 +122,7 @@ const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob
                         <div>{jobData.contracted}</div>
                       </div>
                     </div>
-                    {stream 
+                    {stream && stream.state == 'Active'
                       ? <div className='details-view flex flex-col'>
                           Some progress for the stream
                         </div>

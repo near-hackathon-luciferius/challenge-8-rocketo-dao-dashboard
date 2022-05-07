@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Button, TextInput } from 'react-materialize';
 import { useNavigate } from "react-router-dom";
 
-const JobDetailAdminCommands = ({jobData, onCancelJob, onStartJob}) => {
+const JobDetailAdminCommands = ({jobData, onCancelJob, onStartJob, stream}) => {
     const [contracted, setContracted] = useState();
     const navigate = useNavigate();
 
@@ -20,10 +20,13 @@ const JobDetailAdminCommands = ({jobData, onCancelJob, onStartJob}) => {
 
   switch(jobData.state){
       case 'InProgress':
+          if(stream && stream.state !== 'Active'){
+              return null;
+          }
           return <>
                     <Button large 
                             tooltip='Canceles the payment an the job offering. Important: A new job has to be created afterwards.' 
-                            onClick={() => onCancelJob(jobData.id)}>
+                            onClick={() => onCancelJob(jobData.payment_stream_id)}>
                         Cancel Contract
                     </Button>
                  </>

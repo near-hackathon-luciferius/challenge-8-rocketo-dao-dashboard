@@ -83078,7 +83078,8 @@ const JobDetailAdminCommands = _ref => {
   let {
     jobData,
     onCancelJob,
-    onStartJob
+    onStartJob,
+    stream
   } = _ref;
   const [contracted, setContracted] = (0, _react.useState)();
   const navigate = (0, _reactRouterDom.useNavigate)();
@@ -83097,10 +83098,14 @@ const JobDetailAdminCommands = _ref => {
 
   switch (jobData.state) {
     case 'InProgress':
+      if (stream && stream.state !== 'Active') {
+        return null;
+      }
+
       return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_reactMaterialize.Button, {
         large: true,
         tooltip: "Canceles the payment an the job offering. Important: A new job has to be created afterwards.",
-        onClick: () => onCancelJob(jobData.id)
+        onClick: () => onCancelJob(jobData.payment_stream_id)
       }, "Cancel Contract"));
 
     case 'Open':
@@ -83274,6 +83279,7 @@ const JobDetail = _ref => {
   const [jobData, setJobData] = (0, _react.useState)();
   const [jobPayment, setJobPayment] = (0, _react.useState)();
   const [stream, setStream] = (0, _react.useState)();
+  const [state, setState] = (0, _react.useState)();
   (0, _react.useEffect)(() => {
     if (!daoData.jobs) {
       return;
@@ -83322,6 +83328,24 @@ const JobDetail = _ref => {
 
     fetchData();
   }, [jobData]);
+  (0, _react.useEffect)(() => {
+    if (jobData && stream) {
+      switch (jobData.state) {
+        case 'InProgress':
+          if (stream.state === 'Active') {
+            setState('Running');
+          } else {
+            setState('Completed/Cancelled');
+          }
+
+          break;
+
+        default:
+          setState(jobData.state);
+          break;
+      }
+    }
+  }, [jobData, stream]);
 
   if (!jobData) {
     return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h1", null, job, "'s Details")), /*#__PURE__*/_react.default.createElement("h1", null, "Loading..."));
@@ -83332,7 +83356,8 @@ const JobDetail = _ref => {
   }, currentUser.accountId === dao ? /*#__PURE__*/_react.default.createElement(_JobDetailAdminCommands.default, {
     jobData: jobData,
     onCancelJob: onCancelJob,
-    onStartJob: onStartJob
+    onStartJob: onStartJob,
+    stream: stream
   }) : jobData && jobData.contracted === currentUser.accountId ? /*#__PURE__*/_react.default.createElement(_JobDetailUserCommands.default, {
     currentUser: currentUser,
     roketoContract: roketoContract,
@@ -83350,7 +83375,7 @@ const JobDetail = _ref => {
     className: "flex justify-between margin-row-small"
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "text-unimportant min-margin-right"
-  }, "Status:"), /*#__PURE__*/_react.default.createElement("div", null, jobData.state)), /*#__PURE__*/_react.default.createElement("div", {
+  }, "Status:"), /*#__PURE__*/_react.default.createElement("div", null, state)), /*#__PURE__*/_react.default.createElement("div", {
     className: "flex justify-between margin-row-small"
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "text-unimportant min-margin-right"
@@ -83366,7 +83391,7 @@ const JobDetail = _ref => {
     className: "flex justify-between margin-row-small"
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "text-unimportant min-margin-right"
-  }, "Contracted:"), /*#__PURE__*/_react.default.createElement("div", null, jobData.contracted))), stream ? /*#__PURE__*/_react.default.createElement("div", {
+  }, "Contracted:"), /*#__PURE__*/_react.default.createElement("div", null, jobData.contracted))), stream && stream.state == 'Active' ? /*#__PURE__*/_react.default.createElement("div", {
     className: "details-view flex flex-col"
   }, "Some progress for the stream") : null), dao !== currentUser.accountId && jobData.state === 'Open' ? /*#__PURE__*/_react.default.createElement("div", {
     className: "margin-row-big"
@@ -96437,7 +96462,12 @@ const App = _ref => {
 
       if (!message) {
         //receive payment
-        message = result.receipts_outcome[11].outcome.logs.pop();
+        message = result.receipts_outcome[result.receipts_outcome.length - 3].outcome.logs.pop();
+      }
+
+      if (!message && result.transaction.actions[0].FunctionCall.method_name == 'stop_stream') {
+        //TODO start update status contract call
+        message = "Executed payment stream cancellation method.";
       }
 
       if (message) {
@@ -96462,10 +96492,10 @@ const App = _ref => {
     fetchData();
   }, [contract, currentUser, dao]);
 
-  const onCancelJob = jobId => {
-    contract.cancel_job({
-      job_id: jobId
-    }, BOATLOAD_OF_GAS, (0, _big.default)('1').times(10 ** 21).toFixed()).then(_ => {
+  const onCancelJob = streamId => {
+    roketoContract.stop_stream({
+      stream_id: streamId
+    }, BOATLOAD_OF_GAS, 1).then(_ => {
       console.log("Successfully canceled.");
     });
   };
@@ -96679,7 +96709,7 @@ function getConfig(env) {
         networkId: 'mainnet',
         nodeUrl: 'https://rpc.mainnet.near.org',
         contractName: CONTRACT_NAME,
-        roketoContractName: ROKETO_CONTRACT_NAME,
+        //roketoContractName: ROKETO_CONTRACT_NAME,
         walletUrl: 'https://wallet.near.org',
         helperUrl: 'https://helper.mainnet.near.org'
       };
@@ -96690,7 +96720,7 @@ function getConfig(env) {
         networkId: 'testnet',
         nodeUrl: 'https://rpc.testnet.near.org',
         contractName: CONTRACT_NAME,
-        roketoContractName: ROKETO_CONTRACT_NAME,
+        //roketoContractName: ROKETO_CONTRACT_NAME,
         walletUrl: 'https://wallet.testnet.near.org',
         helperUrl: 'https://helper.testnet.near.org'
       };
@@ -96711,8 +96741,8 @@ function getConfig(env) {
         nodeUrl: 'http://localhost:3030',
         keyPath: `${"C:\\Users\\9QJ6PC"}/.near/validator_key.json`,
         walletUrl: 'http://localhost:4000/wallet',
-        contractName: CONTRACT_NAME,
-        roketoContractName: ROKETO_CONTRACT_NAME
+        contractName: CONTRACT_NAME //roketoContractName: ROKETO_CONTRACT_NAME,
+
       };
 
     case 'test':
@@ -96721,7 +96751,7 @@ function getConfig(env) {
         networkId: 'shared-test',
         nodeUrl: 'https://rpc.ci-testnet.near.org',
         contractName: CONTRACT_NAME,
-        roketoContractName: ROKETO_CONTRACT_NAME,
+        //roketoContractName: ROKETO_CONTRACT_NAME,
         masterAccount: 'test.near'
       };
 
@@ -96730,7 +96760,7 @@ function getConfig(env) {
         networkId: 'shared-test-staging',
         nodeUrl: 'https://rpc.ci-betanet.near.org',
         contractName: CONTRACT_NAME,
-        roketoContractName: ROKETO_CONTRACT_NAME,
+        //roketoContractName: ROKETO_CONTRACT_NAME,
         masterAccount: 'test.near'
       };
 
@@ -113066,7 +113096,7 @@ async function initContract() {
     // View methods are read-only – they don't modify the state, but usually return some value
     viewMethods: ['get_stream', 'get_account'],
     // Change methods can modify the state, but you don't receive the returned value when called
-    changeMethods: ['account_update_cron_flag'],
+    changeMethods: ['account_update_cron_flag', 'stop_stream'],
     // Sender is the account ID to initialize transactions.
     // getAccountId() will return empty string if user is still unauthorized
     sender: walletConnection.getAccountId()
@@ -113143,7 +113173,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53343" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61704" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

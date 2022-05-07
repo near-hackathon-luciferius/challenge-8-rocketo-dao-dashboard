@@ -46,7 +46,11 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
         }
         if(!message){
           //receive payment
-          message = result.receipts_outcome[11].outcome.logs.pop();
+          message = result.receipts_outcome[result.receipts_outcome.length-3].outcome.logs.pop();
+        }
+        if(!message && result.transaction.actions[0].FunctionCall.method_name == 'stop_stream'){
+          //TODO start update status contract call
+          message = "Executed payment stream cancellation method."
         }
         if(message){
           setMessage(message);
@@ -71,13 +75,13 @@ const App = ({ contract, currentUser, nearConfig, wallet, provider, lastTransact
       fetchData();
   }, [contract, currentUser, dao]);
 
-  const onCancelJob = (jobId) => {
-      contract.cancel_job(
+  const onCancelJob = (streamId) => {
+      roketoContract.stop_stream(
         {
-          job_id: jobId
+          stream_id: streamId
         },
         BOATLOAD_OF_GAS,
-        Big('1').times(10 ** 21).toFixed()
+        1
       ).then((_) => {
         console.log("Successfully canceled.");
       })
