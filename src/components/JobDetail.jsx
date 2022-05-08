@@ -81,10 +81,10 @@ const JobDetail = ({daoData, currentUser, onCancelJob, onStartJob, onApplyForJob
   }, [jobData, stream, roketoContract]);
 
   useEffect(() => {
-    if(jobData && stream){
+    if(jobData){
       switch(jobData.state){
         case 'InProgress':
-          if(stream.status === 'Active'){
+          if(stream && stream.status === 'Active'){
             setState('Running')
           }
           else{
