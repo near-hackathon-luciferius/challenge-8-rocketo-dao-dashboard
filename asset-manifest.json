@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/challenge-8-rocketo-dao-dashboard/static/css/main.a863a2eb.chunk.css",
-    "main.js": "/challenge-8-rocketo-dao-dashboard/static/js/main.3d4d6e1c.chunk.js",
-    "main.js.map": "/challenge-8-rocketo-dao-dashboard/static/js/main.3d4d6e1c.chunk.js.map",
+    "main.css": "/challenge-8-rocketo-dao-dashboard/static/css/main.0f56302b.chunk.css",
+    "main.js": "/challenge-8-rocketo-dao-dashboard/static/js/main.f3b833ae.chunk.js",
+    "main.js.map": "/challenge-8-rocketo-dao-dashboard/static/js/main.f3b833ae.chunk.js.map",
     "runtime-main.js": "/challenge-8-rocketo-dao-dashboard/static/js/runtime-main.bdefdb30.js",
     "runtime-main.js.map": "/challenge-8-rocketo-dao-dashboard/static/js/runtime-main.bdefdb30.js.map",
-    "static/css/2.fc8f8e93.chunk.css": "/challenge-8-rocketo-dao-dashboard/static/css/2.fc8f8e93.chunk.css",
-    "static/js/2.5b3b680c.chunk.js": "/challenge-8-rocketo-dao-dashboard/static/js/2.5b3b680c.chunk.js",
-    "static/js/2.5b3b680c.chunk.js.map": "/challenge-8-rocketo-dao-dashboard/static/js/2.5b3b680c.chunk.js.map",
+    "static/css/2.4e7f2f24.chunk.css": "/challenge-8-rocketo-dao-dashboard/static/css/2.4e7f2f24.chunk.css",
+    "static/js/2.661d0542.chunk.js": "/challenge-8-rocketo-dao-dashboard/static/js/2.661d0542.chunk.js",
+    "static/js/2.661d0542.chunk.js.map": "/challenge-8-rocketo-dao-dashboard/static/js/2.661d0542.chunk.js.map",
     "index.html": "/challenge-8-rocketo-dao-dashboard/index.html",
-    "static/css/2.fc8f8e93.chunk.css.map": "/challenge-8-rocketo-dao-dashboard/static/css/2.fc8f8e93.chunk.css.map",
-    "static/css/main.a863a2eb.chunk.css.map": "/challenge-8-rocketo-dao-dashboard/static/css/main.a863a2eb.chunk.css.map",
-    "static/js/2.5b3b680c.chunk.js.LICENSE.txt": "/challenge-8-rocketo-dao-dashboard/static/js/2.5b3b680c.chunk.js.LICENSE.txt",
+    "static/css/2.4e7f2f24.chunk.css.map": "/challenge-8-rocketo-dao-dashboard/static/css/2.4e7f2f24.chunk.css.map",
+    "static/css/main.0f56302b.chunk.css.map": "/challenge-8-rocketo-dao-dashboard/static/css/main.0f56302b.chunk.css.map",
+    "static/js/2.661d0542.chunk.js.LICENSE.txt": "/challenge-8-rocketo-dao-dashboard/static/js/2.661d0542.chunk.js.LICENSE.txt",
     "static/media/404.6fa35088.jpg": "/challenge-8-rocketo-dao-dashboard/static/media/404.6fa35088.jpg",
     "static/media/App.css": "/challenge-8-rocketo-dao-dashboard/static/media/Inter-Regular.9cd7588f.ttf"
   },
   "entrypoints": [
     "static/js/runtime-main.bdefdb30.js",
-    "static/css/2.fc8f8e93.chunk.css",
-    "static/js/2.5b3b680c.chunk.js",
-    "static/css/main.a863a2eb.chunk.css",
-    "static/js/main.3d4d6e1c.chunk.js"
+    "static/css/2.4e7f2f24.chunk.css",
+    "static/js/2.661d0542.chunk.js",
+    "static/css/main.0f56302b.chunk.css",
+    "static/js/main.f3b833ae.chunk.js"
   ]
 }
