@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import {TokenImage} from './TokenImage';
 import {ArcProgressBar} from './ProgressBar';
-import {Tooltip} from './Tooltip';
+import {Tooltip} from './tooltip';
 import { streamViewData } from './streamViewData';
 import {StreamingSpeed} from './StreamingSpeed';
 import {streamDirection} from './lib';
