@@ -14,7 +14,7 @@ const JobsOverview = ({daoData, loaded, currentUser, onJobCreation}) => {
     }
     setOpenJobs(splitArrayIntoChunksOfLen(daoData.jobs.filter((j) => j.state === 'Open'), 3));
     setRunningJobs(splitArrayIntoChunksOfLen(daoData.jobs.filter((j) => j.state === 'InProgress'), 3));
-    setCanceledJobs(splitArrayIntoChunksOfLen(daoData.jobs.filter((j) => j.state === 'Canceled'), 3));
+    setCanceledJobs(splitArrayIntoChunksOfLen(daoData.jobs.filter((j) => j.state === 'Canceled' || j.state === 'Completed'), 3));
   }, [daoData]);
   
   const splitArrayIntoChunksOfLen = (arr, len) => {
@@ -76,7 +76,7 @@ const JobsOverview = ({daoData, loaded, currentUser, onJobCreation}) => {
                   : <p className='mb-8'>
                         Currently there are no active jobs.
                     </p>}
-                  <h5>Canceled Jobs</h5>
+                  <h5>Completed Jobs</h5>
                   {canceledJobs.length > 0
                   ? canceledJobs.map(chunk =>
                     <div className="row">
@@ -93,7 +93,7 @@ const JobsOverview = ({daoData, loaded, currentUser, onJobCreation}) => {
                         </div>)}
                     </div>)
                   : <p className='mb-8'>
-                        Currently there are no canceled jobs.
+                        Currently there are no completed jobs.
                     </p>}
                   {(dao === currentUser.accountId) ? <JobForm onJobCreation={onJobCreation}/> : null}
           </>
